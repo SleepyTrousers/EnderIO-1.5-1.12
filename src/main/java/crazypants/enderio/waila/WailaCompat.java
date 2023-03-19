@@ -353,13 +353,14 @@ public class WailaCompat implements IWailaDataProvider {
         } else if (itemStack.getItem() == EnderIO.itemMEConduit) {
             NBTTagCompound nbtRoot = _accessor.getNBTData();
             if (nbtRoot.hasKey("isDense")) {
+                boolean isDenseUltra = nbtRoot.getBoolean("isDenseUltra");
                 boolean isDense = nbtRoot.getBoolean("isDense");
                 int channelsInUse = nbtRoot.getInteger("channelsInUse");
                 currenttip.add(
                         MessageFormat.format(
                                 EnderIO.lang.localize("itemMEConduit.channelsUsed"),
                                 channelsInUse,
-                                isDense ? 32 : 8));
+                                isDenseUltra ? 128 : (isDense ? 32 : 8)));
             }
         }
     }
@@ -395,6 +396,7 @@ public class WailaCompat implements IWailaDataProvider {
             if (mec != null) {
                 tag.setInteger("channelsInUse", mec.getChannelsInUse());
                 tag.setBoolean("isDense", mec.isDense());
+                tag.setBoolean("isDenseUltra", mec.isDenseUltra());
             }
         } else if (te instanceof IInternalPoweredTile) {
             IInternalPoweredTile ipte = (IInternalPoweredTile) te;

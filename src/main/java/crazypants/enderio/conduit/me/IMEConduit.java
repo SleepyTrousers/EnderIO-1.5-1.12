@@ -14,5 +14,7 @@ public interface IMEConduit extends IConduit {
 
     boolean isDense();
 
+    boolean isDenseUltra();
+
     int getChannelsInUse();
 }

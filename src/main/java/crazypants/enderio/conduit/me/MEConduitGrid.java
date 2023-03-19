@@ -43,7 +43,13 @@ public class MEConduitGrid implements IGridBlock {
 
     @Override
     public EnumSet<GridFlags> getFlags() {
-        return conduit.isDense() ? EnumSet.of(GridFlags.DENSE_CAPACITY) : EnumSet.noneOf(GridFlags.class);
+        if (conduit.isDenseUltra()) {
+            return EnumSet.of(GridFlags.ULTRA_DENSE_CAPACITY);
+        }
+        if (conduit.isDense()) {
+            return EnumSet.of(GridFlags.DENSE_CAPACITY);
+        }
+        return EnumSet.noneOf(GridFlags.class);
     }
 
     @Override

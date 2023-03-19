@@ -682,6 +682,11 @@ public class ConduitRecipes {
         addShaped(res.copy(), "bbb", "fqf", "bbb", 'b', conduitBinder, 'f', pureFluix, 'q', quartzFiber);
 
         res.stackSize = 1;
-        addShaped(new ItemStack(EnderIO.itemMEConduit, 1, 1), "bCb", "CbC", "bCb", 'b', conduitBinder, 'C', res);
+        ItemStack resDense = new ItemStack(EnderIO.itemMEConduit, 1, 1);
+        ItemStack resUltra = new ItemStack(EnderIO.itemMEConduit, 1, 2);
+        addShaped(resDense, "bCb", "CbC", "bCb", 'b', conduitBinder, 'C', res);
+        if (Config.enableMEUltraDenseConduits) {
+            addShaped(resUltra, "bCb", "CbC", "bCb", 'b', conduitBinder, 'C', resDense);
+        }
     }
 }

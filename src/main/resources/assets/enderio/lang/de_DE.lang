@@ -130,6 +130,7 @@ enderio.itemGasConduit.tooltip.detailed.line1=Transportiert Mekanism-kompatible 
 
 enderio.itemMEConduit.name=ME-Leitung
 enderio.itemMEConduitDense.name=Dichte ME-Leitung
+enderio.itemMEConduitDenseUltra.name=Extrem Dichte ME-Leitungen
 enderio.itemMEConduit.channelsUsed={0,number} von {1,number} Kanälen
 
 enderio.itemOCConduit.name=Netzwerkleitung (OC)

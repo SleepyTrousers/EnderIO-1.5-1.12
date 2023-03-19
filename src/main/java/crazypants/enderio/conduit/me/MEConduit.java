@@ -13,6 +13,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.AEApi;
+import appeng.api.networking.GridFlags;
 import appeng.api.networking.IGridConnection;
 import appeng.api.networking.IGridHost;
 import appeng.api.networking.IGridNode;
@@ -44,6 +45,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
     public static IIcon[] longTextures;
 
     private boolean isDense;
+    private boolean isDenseUltra;
     private int playerID = -1;
 
     public MEConduit() {
@@ -51,6 +53,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
     }
 
     public MEConduit(int itemDamage) {
+        isDenseUltra = itemDamage == 2;
         isDense = itemDamage == 1;
     }
 
@@ -59,14 +62,16 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
 
             @Override
             public void registerIcons(IIconRegister register) {
-                coreTextures = new IIcon[2];
-                longTextures = new IIcon[2];
+                coreTextures = new IIcon[3];
+                longTextures = new IIcon[3];
 
                 coreTextures[0] = register.registerIcon(EnderIO.DOMAIN + ":meConduitCore");
                 coreTextures[1] = register.registerIcon(EnderIO.DOMAIN + ":meConduitCoreDense");
+                coreTextures[2] = register.registerIcon(EnderIO.DOMAIN + ":meConduitCoreDenseUltra");
 
                 longTextures[0] = register.registerIcon(EnderIO.DOMAIN + ":meConduit");
                 longTextures[1] = register.registerIcon(EnderIO.DOMAIN + ":meConduitDense");
+                longTextures[2] = register.registerIcon(EnderIO.DOMAIN + ":meConduitDenseUltra");
             }
 
             @Override
@@ -76,8 +81,14 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
         });
     }
 
-    public static int getDamageForState(boolean isDense) {
-        return isDense ? 1 : 0;
+    public static int getDamageForState(boolean isDense, boolean isDenseUltra) {
+        if (isDenseUltra) {
+            return 2;
+        }
+        if (isDense) {
+            return 1;
+        }
+        return 0;
     }
 
     @Override
@@ -87,7 +98,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
 
     @Override
     public ItemStack createItem() {
-        return new ItemStack(EnderIO.itemMEConduit, 1, getDamageForState(isDense));
+        return new ItemStack(EnderIO.itemMEConduit, 1, getDamageForState(isDense, isDenseUltra));
     }
 
     @Override
@@ -105,6 +116,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
     public void writeToNBT(NBTTagCompound nbtRoot) {
         super.writeToNBT(nbtRoot);
         nbtRoot.setBoolean("isDense", isDense);
+        nbtRoot.setBoolean("isDenseUltra", isDenseUltra);
         nbtRoot.setInteger("playerID", playerID);
     }
 
@@ -116,6 +128,9 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
             playerID = nbtRoot.getInteger("playerID");
         } else {
             playerID = -1;
+        }
+        if (nbtRoot.hasKey("isDenseUltra")) {
+            isDenseUltra = nbtRoot.getBoolean("isDenseUltra");
         }
     }
 
@@ -148,26 +163,40 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
 
         // because the AE2 API doesn't allow an easy query like "which side can connect to an ME cable" it needs this
         // mess
+        IGridNode node = null;
         if (te instanceof IPartHost) {
             IPart part = ((IPartHost) te).getPart(dir.getOpposite());
             if (part == null) {
                 part = ((IPartHost) te).getPart(ForgeDirection.UNKNOWN);
-                return part != null;
             }
-            if (part.getExternalFacingNode() != null) {
-                return true;
+            if (part != null) {
+                node = part.getExternalFacingNode();
+                if (node == null) {
+                    node = part.getGridNode();
+                }
             }
-            String name = part.getClass().getSimpleName();
-            return "PartP2PTunnelME".equals(name) || "PartQuartzFiber".endsWith(name)
-                    || "PartToggleBus".equals(name)
-                    || "PartInvertedToggleBus".equals(name);
         } else if (te instanceof IGridHost) {
-            IGridNode node = ((IGridHost) te).getGridNode(dir.getOpposite());
+            node = ((IGridHost) te).getGridNode(dir.getOpposite());
             if (node == null) {
                 node = ((IGridHost) te).getGridNode(ForgeDirection.UNKNOWN);
             }
-            if (node != null) {
-                return node.getGridBlock().getConnectableSides().contains(dir.getOpposite());
+        }
+        if (node != null) {
+            return canConnectToGridNode(node, dir);
+        }
+        return false;
+    }
+
+    @Method(modid = "appliedenergistics2")
+    private Boolean canConnectToGridNode(IGridNode node, ForgeDirection dir) {
+        if (node.getGridBlock().getConnectableSides().contains(dir.getOpposite())) {
+            if (isDenseUltra()) {
+                return node.hasFlag(GridFlags.ULTRA_DENSE_CAPACITY)
+                        || ((node.hasFlag(GridFlags.DENSE_CAPACITY)) && !node.hasFlag(GridFlags.CANNOT_CARRY));
+            } else if (isDense()) {
+                return true;
+            } else {
+                return !node.hasFlag(GridFlags.ULTRA_DENSE_CAPACITY);
             }
         }
         return false;
@@ -175,7 +204,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
 
     @Override
     public IIcon getTextureForState(CollidableComponent component) {
-        int state = getDamageForState(isDense);
+        int state = getDamageForState(isDense, isDenseUltra);
         if (component.dir == ForgeDirection.UNKNOWN) {
             return coreTextures[state];
         } else {
@@ -342,5 +371,10 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
     @Override
     public boolean isDense() {
         return isDense;
+    }
+
+    @Override
+    public boolean isDenseUltra() {
+        return isDenseUltra;
     }
 }

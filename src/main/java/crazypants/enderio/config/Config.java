@@ -438,6 +438,7 @@ public final class Config {
 
     public static boolean isGasConduitEnabled = true;
     public static boolean enableMEConduits = true;
+    public static boolean enableMEUltraDenseConduits = false;
     public static boolean enableOCConduits = true;
     public static boolean enableOCConduitsAnimatedTexture = true;
 
@@ -2298,6 +2299,11 @@ public final class Config {
                 sectionItems.name,
                 enableMEConduits,
                 "Allows ME conduits. Only has an effect with AE2 installed.");
+        enableMEUltraDenseConduits = config.getBoolean(
+                "enableMEUltraDenseConduits",
+                sectionItems.name,
+                enableMEUltraDenseConduits,
+                "Allows ME Ultra Dense conduits. Only has an effect with AE2 installed.");
         enableOCConduits = config.getBoolean(
                 "enableOCConduits",
                 sectionItems.name,

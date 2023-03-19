@@ -15,7 +15,8 @@ public class ItemMEConduit extends AbstractItemConduit {
 
     private static ItemConduitSubtype[] subtypes = new ItemConduitSubtype[] {
             new ItemConduitSubtype(ModObject.itemMEConduit.name(), "enderio:itemMeConduit"),
-            new ItemConduitSubtype(ModObject.itemMEConduit.name() + "Dense", "enderio:itemMeConduitDense") };
+            new ItemConduitSubtype(ModObject.itemMEConduit.name() + "Dense", "enderio:itemMeConduitDense"),
+            new ItemConduitSubtype(ModObject.itemMEConduit.name() + "DenseUltra", "enderio:itemMeConduitDenseUltra") };
 
     public static ItemMEConduit create() {
         ItemMEConduit result = new ItemMEConduit();
