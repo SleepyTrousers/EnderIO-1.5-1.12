@@ -84,6 +84,8 @@ public abstract class AbstractConduit implements IConduit {
 
     protected boolean connectionsDirty = true;
 
+    protected boolean needUpdateConnections = false;
+
     protected AbstractConduit() {}
 
     @Override
@@ -461,7 +463,15 @@ public abstract class AbstractConduit implements IConduit {
             connectionsChanged();
         }
 
-        connectionsDirty = false;
+        if (needUpdateConnections) {
+            needUpdateConnections = false;
+        } else {
+            connectionsDirty = false;
+        }
+    }
+
+    protected void needUpdateConnections() {
+        needUpdateConnections = true;
     }
 
     @Override
