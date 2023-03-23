@@ -92,7 +92,9 @@ public abstract class AbstractConduit implements IConduit {
      * 
      * @see needUpdateConnections()
      */
-    protected boolean needUpdateConnections = false;
+    private boolean needUpdateConnections = false;
+
+    private boolean isUpdatingConnections = false;
 
     protected AbstractConduit() {}
 
@@ -444,9 +446,12 @@ public abstract class AbstractConduit implements IConduit {
     }
 
     private void updateConnections() {
-        if (!connectionsDirty) {
+        if (!connectionsDirty && !needUpdateConnections) {
             return;
         }
+
+        isUpdatingConnections = true;
+        needUpdateConnections = false;
 
         boolean externalConnectionsChanged = false;
         List<ForgeDirection> copy = new ArrayList<ForgeDirection>(externalConnections);
@@ -471,12 +476,8 @@ public abstract class AbstractConduit implements IConduit {
             connectionsChanged();
         }
 
-        if (needUpdateConnections) {
-            // Seems the update was not successfull, let's try on the next Tick.
-            needUpdateConnections = false;
-        } else {
-            connectionsDirty = false;
-        }
+        connectionsDirty = false;
+        isUpdatingConnections = false;
     }
 
     /**
@@ -488,7 +489,9 @@ public abstract class AbstractConduit implements IConduit {
      * See this PR for more info: https://github.com/GTNewHorizons/EnderIO/pull/111
      */
     protected void needUpdateConnections() {
-        needUpdateConnections = true;
+        if (isUpdatingConnections) {
+            needUpdateConnections = true;
+        }
     }
 
     @Override
