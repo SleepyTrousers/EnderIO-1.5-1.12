@@ -84,6 +84,14 @@ public abstract class AbstractConduit implements IConduit {
 
     protected boolean connectionsDirty = true;
 
+    /**
+     * This shows if the currently running connection update should not finish with settings connectionsDirty to false.
+     * If this is true, it will trigger a reconnection on the next Tick.
+     * <p>
+     * Use the method needUpdateConnections() instead of setting this to true.
+     * 
+     * @see needUpdateConnections()
+     */
     protected boolean needUpdateConnections = false;
 
     protected AbstractConduit() {}
@@ -464,12 +472,21 @@ public abstract class AbstractConduit implements IConduit {
         }
 
         if (needUpdateConnections) {
+            // Seems the update was not successfull, let's try on the next Tick.
             needUpdateConnections = false;
         } else {
             connectionsDirty = false;
         }
     }
 
+    /**
+     * This method prevents connection update from getting completed successfully by not settings connectionsDirty to
+     * false. This will trigger an connection update at the next Tick.
+     * <p>
+     * Only use this while executing updateConnections().
+     * <p>
+     * See this PR for more info: https://github.com/GTNewHorizons/EnderIO/pull/111
+     */
     protected void needUpdateConnections() {
         needUpdateConnections = true;
     }

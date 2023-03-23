@@ -175,6 +175,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
                     node = part.getGridNode();
                 }
                 if (node == null) {
+                    // The GridNode has not been initialized yet, let's try on the next Tick.
                     needUpdateConnections();
                 }
             }
