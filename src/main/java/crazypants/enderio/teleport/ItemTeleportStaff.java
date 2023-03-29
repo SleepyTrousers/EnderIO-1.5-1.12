@@ -68,6 +68,12 @@ public class ItemTeleportStaff extends ItemTravelStaff {
     }
 
     @Override
+    public int receiveEnergy(ItemStack container, int maxReceive, boolean simulate) {
+        // Don't allow receiving energy, since we have infinite energy.
+        return 0;
+    }
+
+    @Override
     public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
         // Don't allow extracting energy.
         return 0;

@@ -131,6 +131,10 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
 
     @Override
     public int receiveEnergy(ItemStack container, int maxReceive, boolean simulate) {
+        if (maxReceive < 0) {
+            return 0;
+        }
+
         int res = super.receiveEnergy(container, maxReceive, simulate);
         if (res != 0 && !simulate) {
             updateDamage(container);
@@ -148,6 +152,10 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
     }
 
     public int extractEnergyInternal(ItemStack container, int maxExtract, boolean simulate) {
+        if (maxExtract < 0) {
+            return 0;
+        }
+
         int res = super.extractEnergy(container, maxExtract, simulate);
         if (res != 0 && !simulate) {
             updateDamage(container);
