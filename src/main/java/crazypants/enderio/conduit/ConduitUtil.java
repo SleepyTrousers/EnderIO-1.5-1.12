@@ -248,7 +248,7 @@ public class ConduitUtil {
 
     public static <T extends IConduit> Collection<T> getConnectedConduits(World world, int x, int y, int z,
             Class<T> type) {
-        TileEntity te = world.getTileEntity(x, y, z);
+        TileEntity te = world.blockExists(x, y, z) ? world.getTileEntity(x, y, z) : null;
         if (!(te instanceof IConduitBundle)) {
             return Collections.emptyList();
         }
