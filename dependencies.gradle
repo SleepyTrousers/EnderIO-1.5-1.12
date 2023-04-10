@@ -4,6 +4,7 @@ dependencies {
     api('com.github.GTNewHorizons:EnderCore:0.2.13:dev')
     implementation('com.github.GTNewHorizons:ForestryMC:4.5.8:dev')
     implementation('com.github.GTNewHorizons:NotEnoughItems:2.3.35-GTNH:dev')
+    implementation("com.github.GTNewHorizons:GTNHLib:0.0.13:dev")
     api('com.github.GTNewHorizons:BuildCraft:7.1.27:dev')
     api('curse.maven:cofh-lib-220333:2388748') // https://www.curseforge.com/minecraft/mc-mods/cofh-lib/files/2388748
     shadowImplementation('cglib:cglib-nodep:3.3.0')

@@ -17,12 +17,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovementInput;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -37,7 +32,9 @@ import com.enderio.core.common.vecmath.Vector2d;
 import com.enderio.core.common.vecmath.Vector3d;
 import com.google.common.collect.MultimapBuilder;
 import com.google.common.collect.SetMultimap;
+import com.gtnewhorizon.gtnhlib.GTNHLib;
 
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -338,7 +335,7 @@ public class TravelController {
         }
 
         if (displayOutOfRangeMessage && distanceMap.isEmpty()) {
-            player.addChatComponentMessage(new ChatComponentTranslation("enderio.blockTravelPlatform.outOfRange"));
+            showMessage(player, new ChatComponentTranslation("enderio.blockTravelPlatform.outOfRange"));
         }
 
         return distanceMap.values().stream().findFirst();
@@ -532,7 +529,7 @@ public class TravelController {
                         TravelController.instance.selectedCoord.z);
             }
         } else {
-            player.addChatComponentMessage(new ChatComponentTranslation("enderio.gui.travelAccessable.unauthorised"));
+            showMessage(player, new ChatComponentTranslation("enderio.gui.travelAccessable.unauthorised"));
         }
     }
 
@@ -578,8 +575,7 @@ public class TravelController {
             if (te instanceof ITravelAccessable) {
                 ITravelAccessable ta = (ITravelAccessable) te;
                 if (!ta.canBlockBeAccessed(player)) {
-                    player.addChatComponentMessage(
-                            new ChatComponentTranslation("enderio.gui.travelAccessable.unauthorised"));
+                    showMessage(player, new ChatComponentTranslation("enderio.gui.travelAccessable.unauthorised"));
                     return false;
                 }
             }
@@ -593,14 +589,13 @@ public class TravelController {
 
         if (!isInRangeTarget(player, coord, source.getMaxDistanceTravelledSq())) {
             if (source != TravelSource.STAFF_BLINK && source != TravelSource.TELEPORT_STAFF_BLINK) {
-                player.addChatComponentMessage(new ChatComponentTranslation("enderio.blockTravelPlatform.outOfRange"));
+                showMessage(player, new ChatComponentTranslation("enderio.blockTravelPlatform.outOfRange"));
             }
             return false;
         }
         if (!isValidTarget(player, coord, source)) {
             if (source != TravelSource.STAFF_BLINK && source != TravelSource.TELEPORT_STAFF_BLINK) {
-                player.addChatComponentMessage(
-                        new ChatComponentTranslation("enderio.blockTravelPlatform.invalidTarget"));
+                showMessage(player, new ChatComponentTranslation("enderio.blockTravelPlatform.invalidTarget"));
             }
             return false;
         }
@@ -630,7 +625,7 @@ public class TravelController {
         if (requiredPower > canUsePower) {
             // make sure chat is sent only once per trial
             if (!insufficientPower) {
-                player.addChatComponentMessage(new ChatComponentTranslation("enderio.itemTravelStaff.notEnoughPower"));
+                showMessage(player, new ChatComponentTranslation("enderio.itemTravelStaff.notEnoughPower"));
                 insufficientPower = true;
             }
             return -1;
@@ -745,17 +740,16 @@ public class TravelController {
 
                 if (Config.travelAnchorSkipWarning) {
                     if (travelBlock.getRequiresPassword(player)) {
-                        player.addChatComponentMessage(
-                                new ChatComponentTranslation("enderio.gui.travelAccessable.skipLocked"));
+                        showMessage(player, new ChatComponentTranslation("enderio.gui.travelAccessable.skipLocked"));
                     }
 
                     if (travelBlock.getAccessMode() == ITravelAccessable.AccessMode.PRIVATE
                             && !travelBlock.canUiBeAccessed(player)) {
-                        player.addChatComponentMessage(
-                                new ChatComponentTranslation("enderio.gui.travelAccessable.skipPrivate"));
+                        showMessage(player, new ChatComponentTranslation("enderio.gui.travelAccessable.skipPrivate"));
                     }
                     if (!isValidTarget(player, targetBlock, TravelSource.BLOCK)) {
-                        player.addChatComponentMessage(
+                        showMessage(
+                                player,
                                 new ChatComponentTranslation("enderio.gui.travelAccessable.skipObstructed"));
                     }
                 }
@@ -943,5 +937,17 @@ public class TravelController {
             }
         }
         return null;
+    }
+
+    private static void showMessage(EntityPlayer player, IChatComponent chatComponent) {
+        if (Loader.isModLoaded("gtnhlib")) {
+            GTNHLib.proxy.printMessageAboveHotbar(
+                    EnumChatFormatting.WHITE + chatComponent.getFormattedText(),
+                    60,
+                    true,
+                    true);
+        } else {
+            player.addChatComponentMessage(chatComponent);
+        }
     }
 }
