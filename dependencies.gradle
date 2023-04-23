@@ -2,20 +2,20 @@
 
 dependencies {
     api('com.github.GTNewHorizons:EnderCore:0.2.13:dev')
-    implementation('com.github.GTNewHorizons:ForestryMC:4.5.8:dev')
-    implementation('com.github.GTNewHorizons:NotEnoughItems:2.3.35-GTNH:dev')
+    implementation('com.github.GTNewHorizons:ForestryMC:4.6.5:dev')
+    implementation('com.github.GTNewHorizons:NotEnoughItems:2.3.45-GTNH:dev')
     implementation("com.github.GTNewHorizons:GTNHLib:0.0.13:dev")
-    api('com.github.GTNewHorizons:BuildCraft:7.1.27:dev')
+    api('com.github.GTNewHorizons:BuildCraft:7.1.33:dev')
     api('curse.maven:cofh-lib-220333:2388748') // https://www.curseforge.com/minecraft/mc-mods/cofh-lib/files/2388748
     shadowImplementation('cglib:cglib-nodep:3.3.0')
 
-    compileOnly('com.github.GTNewHorizons:waila:1.5.23:api') {transitive = false}
-    compileOnly('com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-168-GTNH:api') {transitive = false}
+    compileOnly('com.github.GTNewHorizons:waila:1.5.24:api') {transitive = false}
+    compileOnly('com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-195-GTNH:api') {transitive = false}
     compileOnly('com.github.GTNewHorizons:Baubles:1.0.1.14:dev') {transitive = false}
-    compileOnly('com.github.GTNewHorizons:Railcraft:9.13.6:api') {transitive = false}
+    compileOnly('com.github.GTNewHorizons:Railcraft:9.14.1:api') {transitive = false}
     compileOnly('com.github.GTNewHorizons:StorageDrawers:1.11.13-GTNH:api') {transitive = false}
-    implementation('com.github.GTNewHorizons:Chisel:2.10.8-GTNH:dev') {transitive = false}
-    compileOnly('com.github.GTNewHorizons:OpenComputers:1.8.0.13-GTNH:api') {transitive = false}
+    implementation('com.github.GTNewHorizons:Chisel:2.10.17-GTNH:dev') {transitive = false}
+    compileOnly('com.github.GTNewHorizons:OpenComputers:1.9.1-GTNH:api') {transitive = false}
     compileOnly('curse.maven:minefactory-reloaded-66672:2366150') // https://www.curseforge.com/minecraft/mc-mods/minefactory-reloaded/files/2366150
     compileOnly('thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev')
     compileOnly('curse.maven:ee3-65509:2305023') // https://www.curseforge.com/minecraft/mc-mods/ee3/files/2305023
