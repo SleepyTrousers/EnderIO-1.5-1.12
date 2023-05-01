@@ -54,7 +54,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity
     private final ICapacitor capacitor = new BasicCapacitor(
             0,
             Config.transceiverMaxIoRF * 2,
-            500000,
+            Config.transceiverInternalBuffer,
             Config.transceiverMaxIoRF);
     private boolean sendChannelsDirty = false;
     private boolean recieveChannelsDirty = false;

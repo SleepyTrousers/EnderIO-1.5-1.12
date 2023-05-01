@@ -101,6 +101,7 @@ public final class Config {
     public static int transceiverUpkeepCostRF = 10;
     public static int transceiverBucketTransmissionCostRF = 100;
     public static int transceiverMaxIoRF = 20480;
+    public static int transceiverInternalBuffer = 500000;
     public static boolean transceiverUseEasyRecipe = false;
 
     public static File configDirectory;
@@ -1002,6 +1003,13 @@ public final class Config {
                 transceiverMaxIoRF,
                 "Maximum RF/t sent and received by a Dimensional Transceiver per tick. Input and output limits are not cumulative")
                 .getInt(transceiverMaxIoRF);
+        transceiverInternalBuffer = config
+                .get(
+                        sectionPower.name,
+                        "transceiverInternalBuffer",
+                        transceiverInternalBuffer,
+                        "Maximum RF for the send/receive buffer. Need to be at least transceiverMaxIoRF.")
+                .getInt(transceiverInternalBuffer);
         transceiverBucketTransmissionCostRF = config
                 .get(
                         sectionEfficiency.name,
