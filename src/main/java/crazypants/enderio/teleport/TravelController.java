@@ -15,6 +15,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
@@ -941,11 +942,16 @@ public class TravelController {
 
     private static void showMessage(EntityPlayer player, IChatComponent chatComponent) {
         if (Loader.isModLoaded("gtnhlib")) {
-            GTNHLib.proxy.printMessageAboveHotbar(
-                    EnumChatFormatting.WHITE + chatComponent.getFormattedText(),
-                    60,
-                    true,
-                    true);
+            if (player instanceof EntityPlayerMP) {
+                chatComponent.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.WHITE));
+                GTNHLib.proxy.sendMessageAboveHotbar((EntityPlayerMP) player, chatComponent, 60, true, true);
+            } else {
+                GTNHLib.proxy.printMessageAboveHotbar(
+                        EnumChatFormatting.WHITE + chatComponent.getFormattedText(),
+                        60,
+                        true,
+                        true);
+            }
         } else {
             player.addChatComponentMessage(chatComponent);
         }
