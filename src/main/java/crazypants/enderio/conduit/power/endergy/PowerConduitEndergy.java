@@ -5,7 +5,6 @@ import static crazypants.enderio.config.Config.powerConduitEndergyTiers;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -46,27 +45,8 @@ public class PowerConduitEndergy extends PowerConduit {
     }
 
     public static void initIcons() {
-        IconUtil.addIconProvider(new IconUtil.IIconProvider() {
-
-            @Override
-            public void registerIcons(IIconRegister register) {
-                for (String pf : POSTFIX) {
-                    ICONS.put(ICON_KEY + pf, register.registerIcon(ICON_KEY + pf));
-                    ICONS.put(ICON_KEY_INPUT + pf, register.registerIcon(ICON_KEY_INPUT));
-                    ICONS.put(ICON_KEY_OUTPUT + pf, register.registerIcon(ICON_KEY_OUTPUT));
-                    ICONS.put(ICON_CORE_KEY + pf, register.registerIcon(ICON_CORE_KEY + pf));
-                }
-                ICONS.put(ICON_TRANSMISSION_KEY, register.registerIcon(ICON_TRANSMISSION_KEY));
-            }
-
-            @Override
-            public int getTextureType() {
-                return 0;
-            }
-        });
+        initIcons(POSTFIX, ICONS);
     }
-
-    private int subtype;
 
     public PowerConduitEndergy() {
         super();
@@ -74,43 +54,42 @@ public class PowerConduitEndergy extends PowerConduit {
 
     public PowerConduitEndergy(int meta) {
         super(meta);
-        this.subtype = meta;
     }
 
     @Override
     public ICapacitor getCapacitor() {
-        return getCapacitors()[subtype];
+        return getCapacitors()[getSubtype()];
     }
 
     @Override
     public ItemStack createItem() {
-        return createItemStackForSubtype(subtype);
+        return createItemStackForSubtype(getSubtype());
     }
 
     // Rendering
     @Override
     public IIcon getTextureForState(CollidableComponent component) {
         if (component.dir == ForgeDirection.UNKNOWN) {
-            return ICONS.get(ICON_CORE_KEY + POSTFIX[subtype]);
+            return ICONS.get(ICON_CORE_KEY + POSTFIX[getSubtype()]);
         }
         if (COLOR_CONTROLLER_ID.equals(component.data)) {
             return IconUtil.whiteTexture;
         }
-        return ICONS.get(ICON_KEY + POSTFIX[subtype]);
+        return ICONS.get(ICON_KEY + POSTFIX[getSubtype()]);
     }
 
     @Override
     public IIcon getTextureForInputMode() {
-        return ICONS.get(ICON_KEY_INPUT + POSTFIX[subtype]);
+        return ICONS.get(ICON_KEY_INPUT + POSTFIX[getSubtype()]);
     }
 
     @Override
     public IIcon getTextureForOutputMode() {
-        return ICONS.get(ICON_KEY_OUTPUT + POSTFIX[subtype]);
+        return ICONS.get(ICON_KEY_OUTPUT + POSTFIX[getSubtype()]);
     }
 
     @Override
     public int getMaxEnergyStored() {
-        return getCapacitors()[subtype].getMaxEnergyStored();
+        return getCapacitors()[getSubtype()].getMaxEnergyStored();
     }
 }

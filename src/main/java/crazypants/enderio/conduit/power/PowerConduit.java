@@ -68,17 +68,21 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     }
 
     public static void initIcons() {
+        initIcons(POSTFIX, ICONS);
+    }
+
+    protected static void initIcons(String[] postfix, Map<String, IIcon> icons) {
         IconUtil.addIconProvider(new IconUtil.IIconProvider() {
 
             @Override
             public void registerIcons(IIconRegister register) {
-                for (String pf : POSTFIX) {
-                    ICONS.put(ICON_KEY + pf, register.registerIcon(ICON_KEY + pf));
-                    ICONS.put(ICON_KEY_INPUT + pf, register.registerIcon(ICON_KEY_INPUT));
-                    ICONS.put(ICON_KEY_OUTPUT + pf, register.registerIcon(ICON_KEY_OUTPUT));
-                    ICONS.put(ICON_CORE_KEY + pf, register.registerIcon(ICON_CORE_KEY + pf));
+                for (String pf : postfix) {
+                    icons.put(ICON_KEY + pf, register.registerIcon(ICON_KEY + pf));
+                    icons.put(ICON_KEY_INPUT + pf, register.registerIcon(ICON_KEY_INPUT));
+                    icons.put(ICON_KEY_OUTPUT + pf, register.registerIcon(ICON_KEY_OUTPUT));
+                    icons.put(ICON_CORE_KEY + pf, register.registerIcon(ICON_CORE_KEY + pf));
                 }
-                ICONS.put(ICON_TRANSMISSION_KEY, register.registerIcon(ICON_TRANSMISSION_KEY));
+                icons.put(ICON_TRANSMISSION_KEY, register.registerIcon(ICON_TRANSMISSION_KEY));
             }
 
             @Override
@@ -117,6 +121,10 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
     public PowerConduit(int meta) {
         this.subtype = meta;
+    }
+
+    protected int getSubtype() {
+        return subtype;
     }
 
     @Override
