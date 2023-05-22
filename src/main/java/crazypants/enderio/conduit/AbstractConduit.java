@@ -9,11 +9,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import mods.immibis.microblocks.api.EnumPartClass;
-import mods.immibis.microblocks.api.EnumPosition;
-import mods.immibis.microblocks.api.IMicroblockCoverSystem;
-import mods.immibis.microblocks.api.Part;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -52,6 +47,10 @@ import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.power.PowerConduitNetwork;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.redstone.RedstoneConduitNetwork;
+import mods.immibis.microblocks.api.EnumPartClass;
+import mods.immibis.microblocks.api.EnumPosition;
+import mods.immibis.microblocks.api.IMicroblockCoverSystem;
+import mods.immibis.microblocks.api.Part;
 
 public abstract class AbstractConduit implements IConduit {
 

@@ -12,6 +12,9 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.enderio.core.client.render.IconUtil;
+import com.enderio.core.common.util.BlockCoord;
+
 import appeng.api.AEApi;
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.IGridConnection;
@@ -19,10 +22,6 @@ import appeng.api.networking.IGridHost;
 import appeng.api.networking.IGridNode;
 import appeng.api.parts.IPart;
 import appeng.api.parts.IPartHost;
-
-import com.enderio.core.client.render.IconUtil;
-import com.enderio.core.common.util.BlockCoord;
-
 import cpw.mods.fml.common.Optional.Method;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduit;

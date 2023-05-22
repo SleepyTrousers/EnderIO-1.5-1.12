@@ -10,6 +10,7 @@ import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.ForgeDirectionOffsets;
 import com.enderio.core.common.vecmath.VecmathUtil;
 import com.enderio.core.common.vecmath.Vector3d;
+
 import crazypants.enderio.conduit.IConduit;
 
 public class ConduitGeometryUtil {

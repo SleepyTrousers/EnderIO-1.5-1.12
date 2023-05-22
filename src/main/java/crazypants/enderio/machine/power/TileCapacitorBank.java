@@ -17,12 +17,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import cofh.api.energy.IEnergyContainerItem;
-
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.VecmathUtil;
 
+import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.conduit.ConnectionMode;

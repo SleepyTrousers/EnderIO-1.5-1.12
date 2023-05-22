@@ -20,12 +20,11 @@ import net.minecraftforge.common.IShearable;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 
-import cofh.api.energy.IEnergyContainerItem;
-
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.ItemUtil;
 
+import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;

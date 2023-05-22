@@ -8,6 +8,7 @@ import net.minecraft.util.ResourceLocation;
 
 import com.enderio.core.client.gui.GuiContainerBase;
 import com.enderio.core.client.render.RenderUtil;
+
 import crazypants.enderio.EnderIO;
 
 public abstract class GuiContainerBaseEIO extends GuiContainerBase {

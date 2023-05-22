@@ -9,6 +9,7 @@ import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.enderio.core.common.network.CompressedDataInput;
+
 import crazypants.enderio.machine.invpanel.InventoryDatabase;
 
 public class InventoryDatabaseClient extends InventoryDatabase<ItemEntry> {

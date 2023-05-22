@@ -18,12 +18,11 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import cofh.api.inventory.IInventoryConnection;
-
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.DyeColor;
 
+import cofh.api.inventory.IInventoryConnection;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.AbstractConduitNetwork;

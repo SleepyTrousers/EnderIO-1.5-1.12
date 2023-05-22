@@ -12,13 +12,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-import baubles.api.BaubleType;
-import baubles.api.IBauble;
-import cofh.api.energy.ItemEnergyContainer;
-
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.ItemUtil;
 
+import baubles.api.BaubleType;
+import baubles.api.IBauble;
+import cofh.api.energy.ItemEnergyContainer;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.Optional.Method;

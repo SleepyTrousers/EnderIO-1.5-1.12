@@ -14,13 +14,12 @@ import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.render.EnderWidget;
+
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.GuiRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
-
-import com.enderio.core.client.render.EnderWidget;
-
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.crusher.CrusherRecipeManager;
 import crazypants.enderio.machine.crusher.GrindingBall;

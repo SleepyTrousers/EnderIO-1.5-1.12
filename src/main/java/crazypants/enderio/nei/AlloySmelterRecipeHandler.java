@@ -11,14 +11,13 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.render.EnderWidget;
+import com.enderio.core.common.util.ItemUtil;
+
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.ItemList;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
-
-import com.enderio.core.client.render.EnderWidget;
-import com.enderio.core.common.util.ItemUtil;
-
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.alloy.AlloyRecipeManager;
 import crazypants.enderio.machine.alloy.GuiAlloySmelter;

@@ -14,10 +14,9 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import cofh.api.energy.EnergyStorage;
-
 import com.enderio.core.common.util.BlockCoord;
 
+import cofh.api.energy.EnergyStorage;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.power.IInternalPowerProvider;

@@ -23,8 +23,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import cofh.api.energy.EnergyStorage;
-
 import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.Util;
@@ -32,6 +30,7 @@ import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
 
+import cofh.api.energy.EnergyStorage;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

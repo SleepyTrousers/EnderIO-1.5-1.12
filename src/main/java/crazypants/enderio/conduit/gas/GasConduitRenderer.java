@@ -4,8 +4,6 @@ import static com.enderio.core.client.render.CubeRenderer.addVecWithUV;
 
 import java.util.List;
 
-import mekanism.api.gas.GasStack;
-
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
@@ -25,6 +23,7 @@ import crazypants.enderio.conduit.geom.ConnectionModeGeometry;
 import crazypants.enderio.conduit.geom.Offset;
 import crazypants.enderio.conduit.render.ConduitBundleRenderer;
 import crazypants.enderio.conduit.render.DefaultConduitRenderer;
+import mekanism.api.gas.GasStack;
 
 public class GasConduitRenderer extends DefaultConduitRenderer {
 

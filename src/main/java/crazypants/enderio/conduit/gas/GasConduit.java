@@ -3,9 +3,6 @@ package crazypants.enderio.conduit.gas;
 import java.util.HashMap;
 import java.util.Map;
 
-import mekanism.api.gas.Gas;
-import mekanism.api.gas.GasStack;
-
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -24,6 +21,8 @@ import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.config.Config;
+import mekanism.api.gas.Gas;
+import mekanism.api.gas.GasStack;
 
 public class GasConduit extends AbstractGasTankConduit {
 

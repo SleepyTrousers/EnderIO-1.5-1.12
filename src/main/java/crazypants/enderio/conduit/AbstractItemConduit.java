@@ -2,11 +2,6 @@ package crazypants.enderio.conduit;
 
 import java.util.List;
 
-import mods.immibis.microblocks.api.IMicroblockCoverSystem;
-import mods.immibis.microblocks.api.IMicroblockSupporterTile;
-import mods.immibis.microblocks.api.MicroblockAPIUtils;
-import mods.immibis.microblocks.api.Part;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -29,6 +24,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
+import mods.immibis.microblocks.api.IMicroblockCoverSystem;
+import mods.immibis.microblocks.api.IMicroblockSupporterTile;
+import mods.immibis.microblocks.api.MicroblockAPIUtils;
+import mods.immibis.microblocks.api.Part;
 
 public abstract class AbstractItemConduit extends Item implements IConduitItem {
 

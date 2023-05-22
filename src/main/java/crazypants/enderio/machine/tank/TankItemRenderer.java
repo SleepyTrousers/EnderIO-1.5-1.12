@@ -12,6 +12,7 @@ import org.lwjgl.opengl.GL11;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.CubeRenderer;
 import com.enderio.core.client.render.RenderUtil;
+
 import crazypants.enderio.EnderIO;
 
 public class TankItemRenderer implements IItemRenderer {

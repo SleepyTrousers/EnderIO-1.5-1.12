@@ -10,11 +10,11 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
-import cofh.api.energy.IEnergyContainerItem;
-
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector4f;
+
+import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 
 public class PoweredItemRenderer implements IItemRenderer {

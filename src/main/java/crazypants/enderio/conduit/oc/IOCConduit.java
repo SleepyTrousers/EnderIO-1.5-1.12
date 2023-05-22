@@ -1,8 +1,5 @@
 package crazypants.enderio.conduit.oc;
 
-import li.cil.oc.api.network.Environment;
-import li.cil.oc.api.network.SidedEnvironment;
-
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.enderio.core.common.util.DyeColor;
@@ -10,6 +7,8 @@ import com.enderio.core.common.util.DyeColor;
 import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.common.Optional.InterfaceList;
 import crazypants.enderio.conduit.IConduit;
+import li.cil.oc.api.network.Environment;
+import li.cil.oc.api.network.SidedEnvironment;
 
 @InterfaceList({ @Interface(iface = "li.cil.oc.api.network.Environment", modid = "OpenComputersAPI|Network"),
         @Interface(iface = "li.cil.oc.api.network.SidedEnvironment", modid = "OpenComputersAPI|Network") })

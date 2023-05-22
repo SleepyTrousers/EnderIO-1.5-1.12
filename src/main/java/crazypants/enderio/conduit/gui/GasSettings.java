@@ -2,8 +2,6 @@ package crazypants.enderio.conduit.gui;
 
 import java.awt.Color;
 
-import mekanism.api.gas.Gas;
-
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.IIcon;
 
@@ -22,6 +20,7 @@ import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.network.PacketHandler;
+import mekanism.api.gas.Gas;
 
 public class GasSettings extends BaseSettingsPanel {
 

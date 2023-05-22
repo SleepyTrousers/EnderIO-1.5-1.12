@@ -16,6 +16,7 @@ import com.enderio.core.client.render.TechneModelRenderer;
 import com.enderio.core.client.render.TechneUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.google.common.collect.Lists;
+
 import crazypants.enderio.EnderIO;
 
 public class TelePadRenderer extends TechneModelRenderer {

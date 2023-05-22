@@ -4,11 +4,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import li.cil.oc.api.network.Environment;
-import li.cil.oc.api.network.SidedEnvironment;
-import mekanism.api.gas.IGasHandler;
-import mods.immibis.microblocks.api.IMicroblockSupporterTile;
-
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
@@ -16,11 +11,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import appeng.api.networking.IGridHost;
-import cofh.api.transport.IItemDuct;
-
 import com.enderio.core.common.util.BlockCoord;
 
+import appeng.api.networking.IGridHost;
+import cofh.api.transport.IItemDuct;
 import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.common.Optional.InterfaceList;
 import cpw.mods.fml.relauncher.Side;
@@ -29,6 +23,10 @@ import crazypants.enderio.conduit.facade.ItemConduitFacade.FacadeType;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.Offset;
 import crazypants.enderio.power.IInternalPowerHandler;
+import li.cil.oc.api.network.Environment;
+import li.cil.oc.api.network.SidedEnvironment;
+import mekanism.api.gas.IGasHandler;
+import mods.immibis.microblocks.api.IMicroblockSupporterTile;
 
 @InterfaceList({ @Interface(iface = "appeng.api.networking.IGridHost", modid = "appliedenergistics2"),
         @Interface(iface = "mekanism.api.gas.IGasHandler", modid = "MekanismAPI|gas"),

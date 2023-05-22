@@ -17,8 +17,6 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-import codechicken.nei.LayoutManager;
-
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.MultiIconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
@@ -31,6 +29,7 @@ import com.enderio.core.client.render.EnderWidget;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.ItemUtil;
 
+import codechicken.nei.LayoutManager;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

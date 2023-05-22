@@ -6,13 +6,6 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Locale;
 
-import mcp.mobius.waila.api.ITaggedList;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
-import mcp.mobius.waila.api.IWailaDataProvider;
-import mcp.mobius.waila.api.IWailaRegistrar;
-import mcp.mobius.waila.api.impl.ConfigHandler;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -50,6 +43,12 @@ import crazypants.enderio.machine.invpanel.TileInventoryPanel;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.util.IFacade;
+import mcp.mobius.waila.api.ITaggedList;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import mcp.mobius.waila.api.IWailaDataProvider;
+import mcp.mobius.waila.api.IWailaRegistrar;
+import mcp.mobius.waila.api.impl.ConfigHandler;
 
 public class WailaCompat implements IWailaDataProvider {
 

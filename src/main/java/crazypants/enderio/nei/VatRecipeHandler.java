@@ -13,17 +13,16 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.render.EnderWidget;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.FluidUtil;
+
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiRecipe;
 import codechicken.nei.recipe.GuiUsageRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
-
-import com.enderio.core.client.render.EnderWidget;
-import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.util.FluidUtil;
-
 import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.power.PowerDisplayUtil;

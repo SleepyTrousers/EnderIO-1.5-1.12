@@ -16,6 +16,7 @@ import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.util.FluidUtil;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
@@ -23,6 +24,8 @@ import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.reservoir.TileReservoir;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
 public abstract class AbstractLiquidConduit extends AbstractConduit implements ILiquidConduit {
 
@@ -54,6 +57,12 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
         if (h == null) {
             return false;
         }
+
+        if (EnderIO.hasGT5 && h instanceof IGregTechTileEntity) {
+            IMetaTileEntity mte = ((IGregTechTileEntity) h).getMetaTileEntity();
+            return mte != null && mte.getCapacity() > 0;
+        }
+
         // TODO: This check was added to work around a bug in dynamic tanks, but
         // it causes issues with not conecting to empty tanks such as dim. trans +
         // BC fluid pipes, so I am removing it for now.

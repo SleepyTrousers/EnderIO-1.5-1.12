@@ -7,6 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
 import com.enderio.core.common.util.BlockCoord;
+
 import crazypants.enderio.machine.farm.TileFarmStation;
 
 public class FarmersCommune implements IFarmerJoe {

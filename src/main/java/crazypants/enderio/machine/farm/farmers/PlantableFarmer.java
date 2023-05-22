@@ -17,6 +17,7 @@ import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.enderio.core.common.util.BlockCoord;
+
 import crazypants.enderio.machine.farm.TileFarmStation;
 
 public class PlantableFarmer implements IFarmerJoe {

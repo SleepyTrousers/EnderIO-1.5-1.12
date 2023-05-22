@@ -6,9 +6,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
-import mods.railcraft.api.carts.CartTools;
-import mods.railcraft.api.carts.ILinkageManager;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.nbt.NBTTagCompound;
@@ -16,6 +13,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.enderio.core.common.vecmath.Vector3d;
+
+import mods.railcraft.api.carts.CartTools;
+import mods.railcraft.api.carts.ILinkageManager;
 
 public class RailcraftLinkUtil implements ICartLinkUtil {
 

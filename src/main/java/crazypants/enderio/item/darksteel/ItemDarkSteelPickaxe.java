@@ -18,12 +18,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
 
-import cofh.api.energy.IEnergyContainerItem;
-
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.common.util.ItemUtil;
 import com.google.common.collect.Sets;
 
+import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

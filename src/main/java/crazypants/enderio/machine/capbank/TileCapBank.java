@@ -18,13 +18,12 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import cofh.api.energy.IEnergyContainerItem;
-
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.EntityUtil;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector3d;
 
+import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;

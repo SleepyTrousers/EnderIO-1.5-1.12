@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 import com.enderio.core.common.util.BlockCoord;
+
 import crazypants.util.UserIdent;
 
 public interface ITravelAccessable {

@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.ContainerEnder;
 import com.enderio.core.common.util.ArrayInventory;
+
 import crazypants.enderio.teleport.ContainerTravelAuth.AuthInventory;
 
 public class ContainerTravelAuth extends ContainerEnder<AuthInventory> {

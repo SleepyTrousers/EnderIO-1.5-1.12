@@ -10,10 +10,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import thaumcraft.api.ThaumcraftApi;
-import thaumcraft.api.ThaumcraftApiHelper;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
 import cpw.mods.fml.common.Loader;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.item.darksteel.upgrade.IDarkSteelUpgrade;
@@ -23,6 +19,10 @@ import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.FrankenSkull;
 import crazypants.enderio.material.Material;
 import crazypants.enderio.power.Capacitors;
+import thaumcraft.api.ThaumcraftApi;
+import thaumcraft.api.ThaumcraftApiHelper;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectList;
 
 public class ThaumcraftCompat {
 

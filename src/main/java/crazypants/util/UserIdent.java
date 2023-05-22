@@ -11,6 +11,7 @@ import net.minecraftforge.common.UsernameCache;
 import com.enderio.core.common.util.PlayerUtil;
 import com.google.common.base.Charsets;
 import com.mojang.authlib.GameProfile;
+
 import crazypants.enderio.Log;
 
 public class UserIdent {

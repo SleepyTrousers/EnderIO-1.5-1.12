@@ -6,9 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import mods.immibis.core.api.multipart.IMultipartRenderingBlockMarker;
-import mods.immibis.core.api.multipart.IMultipartSystem;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
@@ -30,9 +27,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
-
-import powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode;
-import powercrystals.minefactoryreloaded.api.rednet.connectivity.RedNetConnectionType;
 
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.BlockCoord;
@@ -73,6 +67,10 @@ import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.tool.ToolUtil;
 import crazypants.util.IFacade;
+import mods.immibis.core.api.multipart.IMultipartRenderingBlockMarker;
+import mods.immibis.core.api.multipart.IMultipartSystem;
+import powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode;
+import powercrystals.minefactoryreloaded.api.rednet.connectivity.RedNetConnectionType;
 
 @Optional.InterfaceList({
         @Interface(

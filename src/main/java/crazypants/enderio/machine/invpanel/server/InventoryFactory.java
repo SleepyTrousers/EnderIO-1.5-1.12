@@ -4,12 +4,11 @@ import java.util.ArrayList;
 
 import net.minecraft.inventory.ISidedInventory;
 
-import powercrystals.minefactoryreloaded.api.IDeepStorageUnit;
-
 import com.jaquadro.minecraft.storagedrawers.api.storage.IDrawerGroup;
 
 import cpw.mods.fml.common.Loader;
 import crazypants.enderio.conduit.item.NetworkedInventory;
+import powercrystals.minefactoryreloaded.api.IDeepStorageUnit;
 
 public abstract class InventoryFactory {
 

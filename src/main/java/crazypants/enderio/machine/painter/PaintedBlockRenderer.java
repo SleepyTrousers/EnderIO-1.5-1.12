@@ -11,6 +11,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.enderio.core.client.render.CubeRenderer;
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.common.util.BlockCoord;
+
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 public class PaintedBlockRenderer implements ISimpleBlockRenderingHandler {

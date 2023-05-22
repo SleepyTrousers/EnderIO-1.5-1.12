@@ -7,9 +7,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import cofh.api.energy.EnergyStorage;
-
 import com.google.common.collect.Lists;
+
+import cofh.api.energy.EnergyStorage;
 import crazypants.enderio.config.Config;
 
 public class SolarPanelNetwork {

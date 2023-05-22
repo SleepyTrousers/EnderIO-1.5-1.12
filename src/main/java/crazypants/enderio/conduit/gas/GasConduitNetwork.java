@@ -4,15 +4,15 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import mekanism.api.gas.GasStack;
-import mekanism.api.gas.IGasHandler;
-
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.enderio.core.common.util.BlockCoord;
+
 import crazypants.enderio.conduit.IConduit;
+import mekanism.api.gas.GasStack;
+import mekanism.api.gas.IGasHandler;
 
 public class GasConduitNetwork extends AbstractGasTankConduitNetwork<GasConduit> {
 

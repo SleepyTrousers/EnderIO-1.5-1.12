@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import mekanism.api.gas.IGasHandler;
-
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -23,6 +21,7 @@ import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.reservoir.TileReservoir;
+import mekanism.api.gas.IGasHandler;
 
 public abstract class AbstractGasConduit extends AbstractConduit implements IGasConduit {
 

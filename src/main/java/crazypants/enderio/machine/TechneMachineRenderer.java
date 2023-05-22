@@ -13,6 +13,7 @@ import com.enderio.core.client.render.TechneUtil;
 import com.enderio.core.client.render.VertexRotationFacing;
 import com.enderio.core.client.render.VertexTransformComposite;
 import com.google.common.collect.ObjectArrays;
+
 import crazypants.enderio.EnderIO;
 
 public class TechneMachineRenderer<T extends AbstractMachineEntity> extends TechneModelRenderer {

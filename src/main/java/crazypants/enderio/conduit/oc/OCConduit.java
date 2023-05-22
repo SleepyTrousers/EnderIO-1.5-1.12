@@ -9,11 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import li.cil.oc.api.network.Environment;
-import li.cil.oc.api.network.Message;
-import li.cil.oc.api.network.Node;
-import li.cil.oc.api.network.SidedEnvironment;
-
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -45,6 +40,10 @@ import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.tool.ToolUtil;
+import li.cil.oc.api.network.Environment;
+import li.cil.oc.api.network.Message;
+import li.cil.oc.api.network.Node;
+import li.cil.oc.api.network.SidedEnvironment;
 
 public class OCConduit extends AbstractConduit implements IOCConduit {
 

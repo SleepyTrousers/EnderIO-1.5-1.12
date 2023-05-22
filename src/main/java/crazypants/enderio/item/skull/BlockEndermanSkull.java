@@ -9,13 +9,13 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import thaumcraft.api.crafting.IInfusionStabiliser;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
+import thaumcraft.api.crafting.IInfusionStabiliser;
 
 @Optional.Interface(iface = "thaumcraft.api.crafting.IInfusionStabiliser", modid = "Thaumcraft")
 public class BlockEndermanSkull extends BlockEio implements IInfusionStabiliser {

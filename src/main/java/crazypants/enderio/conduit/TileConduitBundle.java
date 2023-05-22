@@ -7,19 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import li.cil.oc.api.network.*;
-import li.cil.oc.api.network.Message;
-import li.cil.oc.api.network.Node;
-import mekanism.api.gas.Gas;
-import mekanism.api.gas.GasStack;
-import mods.immibis.microblocks.api.EnumPartClass;
-import mods.immibis.microblocks.api.EnumPosition;
-import mods.immibis.microblocks.api.IMicroblockCoverSystem;
-import mods.immibis.microblocks.api.IMicroblockSystem;
-import mods.immibis.microblocks.api.MicroblockAPIUtils;
-import mods.immibis.microblocks.api.Part;
-import mods.immibis.microblocks.api.PartType;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -37,11 +24,10 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
-import appeng.api.networking.IGridNode;
-import appeng.api.util.AECableType;
-
 import com.enderio.core.client.render.BoundingBox;
 
+import appeng.api.networking.IGridNode;
+import appeng.api.util.AECableType;
 import cpw.mods.fml.common.Optional.Method;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -64,6 +50,18 @@ import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.config.Config;
+import li.cil.oc.api.network.*;
+import li.cil.oc.api.network.Message;
+import li.cil.oc.api.network.Node;
+import mekanism.api.gas.Gas;
+import mekanism.api.gas.GasStack;
+import mods.immibis.microblocks.api.EnumPartClass;
+import mods.immibis.microblocks.api.EnumPosition;
+import mods.immibis.microblocks.api.IMicroblockCoverSystem;
+import mods.immibis.microblocks.api.IMicroblockSystem;
+import mods.immibis.microblocks.api.MicroblockAPIUtils;
+import mods.immibis.microblocks.api.Part;
+import mods.immibis.microblocks.api.PartType;
 
 public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
 

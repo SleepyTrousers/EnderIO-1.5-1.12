@@ -9,6 +9,7 @@ import net.minecraft.world.IBlockAccess;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.CubeRenderer;
 import com.enderio.core.client.render.RenderUtil;
+
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 public class ElectricLightRenderer implements ISimpleBlockRenderingHandler {

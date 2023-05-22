@@ -14,6 +14,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import com.enderio.core.common.util.BlockCoord;
 import com.google.common.collect.Lists;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public enum Fertilizer {

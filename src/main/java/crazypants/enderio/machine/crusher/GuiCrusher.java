@@ -7,6 +7,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.widget.GuiToolTip;
+
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 
 public class GuiCrusher extends GuiPoweredMachineBase<TileCrusher> {

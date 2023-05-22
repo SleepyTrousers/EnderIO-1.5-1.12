@@ -9,6 +9,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.enderio.core.common.util.BlockCoord;
+
 import crazypants.enderio.machine.AbstractMachineEntity;
 
 public class PowerDistributor {

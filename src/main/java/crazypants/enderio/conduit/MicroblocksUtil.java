@@ -1,11 +1,10 @@
 package crazypants.enderio.conduit;
 
-import mods.immibis.microblocks.api.EnumPosition;
-
 import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Optional.Method;
+import mods.immibis.microblocks.api.EnumPosition;
 
 public class MicroblocksUtil {
 

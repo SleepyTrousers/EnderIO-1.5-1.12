@@ -9,6 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.base.Strings;
+
 import crazypants.enderio.EnderIO;
 
 public final class PainterUtil {

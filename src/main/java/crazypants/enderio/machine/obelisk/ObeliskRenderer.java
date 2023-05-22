@@ -17,6 +17,7 @@ import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector3f;
 import com.enderio.core.common.vecmath.Vertex;
+
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 public class ObeliskRenderer implements ISimpleBlockRenderingHandler {

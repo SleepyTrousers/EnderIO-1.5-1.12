@@ -207,6 +207,7 @@ public class EnderIO {
     public static final Lang lang = new Lang("enderio");
 
     public static final boolean hasLwjgl3 = Loader.isModLoaded("lwjgl3ify");
+    public static final boolean hasGT5 = Loader.isModLoaded("gregtech") && !Loader.isModLoaded("gregapi_post");
 
     // Materials
     public static ItemCapacitor itemBasicCapacitor;

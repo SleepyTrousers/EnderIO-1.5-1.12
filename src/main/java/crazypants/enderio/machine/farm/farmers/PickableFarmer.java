@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 import com.enderio.core.common.util.BlockCoord;
+
 import crazypants.enderio.machine.farm.TileFarmStation;
 
 public class PickableFarmer extends CustomSeedFarmer {

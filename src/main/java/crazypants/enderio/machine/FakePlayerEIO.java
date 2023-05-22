@@ -8,6 +8,7 @@ import net.minecraftforge.common.util.FakePlayer;
 
 import com.enderio.core.common.util.BlockCoord;
 import com.mojang.authlib.GameProfile;
+
 import crazypants.enderio.machine.farm.FakeNetHandlerPlayServer;
 
 public class FakePlayerEIO extends FakePlayer {

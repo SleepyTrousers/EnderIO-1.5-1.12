@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.enderio.core.common.util.InventoryWrapper;
+
 import crazypants.enderio.ModObject;
 
 public class CompositeInventory implements ISidedInventory {

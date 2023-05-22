@@ -1,7 +1,7 @@
 package crazypants.enderio.conduit.gas;
 
-import mekanism.api.gas.GasStack;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
+import mekanism.api.gas.GasStack;
 
 public class AbstractGasTankConduitNetwork<T extends AbstractGasTankConduit>
         extends AbstractConduitNetwork<IGasConduit, T> {

@@ -2,9 +2,6 @@ package crazypants.enderio.conduit.gas;
 
 import java.util.List;
 
-import mekanism.api.gas.GasStack;
-import mekanism.api.gas.IGasHandler;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -17,6 +14,8 @@ import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.tool.ToolUtil;
+import mekanism.api.gas.GasStack;
+import mekanism.api.gas.IGasHandler;
 
 public abstract class AbstractGasTankConduit extends AbstractGasConduit {
 

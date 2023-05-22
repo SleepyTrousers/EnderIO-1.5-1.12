@@ -27,14 +27,13 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 
 import org.lwjgl.opengl.GL11;
 
-import cofh.api.energy.IEnergyContainerItem;
-
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.VecmathUtil;
 import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector4d;
 import com.mojang.authlib.GameProfile;
 
+import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;

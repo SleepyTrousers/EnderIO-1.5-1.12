@@ -16,15 +16,10 @@ import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
 
-import thaumcraft.api.IGoggles;
-import thaumcraft.api.IVisDiscountGear;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.nodes.IRevealer;
-import cofh.api.energy.IEnergyContainerItem;
-
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.common.util.ItemUtil;
 
+import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.common.Optional.InterfaceList;
@@ -42,6 +37,10 @@ import crazypants.enderio.item.darksteel.upgrade.NaturalistEyeUpgrade;
 import crazypants.enderio.thaumcraft.GogglesOfRevealingUpgrade;
 import forestry.api.apiculture.IArmorApiarist;
 import forestry.api.core.IArmorNaturalist;
+import thaumcraft.api.IGoggles;
+import thaumcraft.api.IVisDiscountGear;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.nodes.IRevealer;
 
 @InterfaceList({ @Interface(iface = "thaumcraft.api.IGoggles", modid = "Thaumcraft"),
         @Interface(iface = "thaumcraft.api.IVisDiscountGear", modid = "Thaumcraft"),

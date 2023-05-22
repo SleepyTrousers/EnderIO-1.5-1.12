@@ -17,6 +17,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
 import com.enderio.core.common.util.EntityUtil;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class EntityWitherSkeleton extends EntitySkeleton {
