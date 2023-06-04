@@ -177,4 +177,9 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IItemOfTrave
     public boolean isFull3D() {
         return true;
     }
+
+    @Override
+    public boolean showDurabilityBar(ItemStack stack) {
+        return Config.renderDurabilityBar && super.showDurabilityBar(stack);
+    }
 }

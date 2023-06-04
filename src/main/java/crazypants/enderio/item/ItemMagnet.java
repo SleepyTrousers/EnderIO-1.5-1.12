@@ -236,4 +236,9 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
     public boolean canUnequip(ItemStack itemstack, EntityLivingBase player) {
         return true;
     }
+
+    @Override
+    public boolean showDurabilityBar(ItemStack stack) {
+        return Config.renderDurabilityBar && super.showDurabilityBar(stack);
+    }
 }

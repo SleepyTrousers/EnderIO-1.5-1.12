@@ -15,6 +15,7 @@ import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector4f;
 
 import cofh.api.energy.IEnergyContainerItem;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 
 public class PoweredItemRenderer implements IItemRenderer {
@@ -44,26 +45,29 @@ public class PoweredItemRenderer implements IItemRenderer {
         ri.renderItemIntoGUI(mc.fontRenderer, mc.getTextureManager(), item, 0, 0, true);
         GL11.glDisable(GL11.GL_LIGHTING);
 
-        if (isJustCrafted(item)) {
+        if (isJustCrafted(item) || (!Config.renderChargeBar && !Config.renderDurabilityBar)) {
             return;
         }
 
         boolean hasEnergyUpgrade = EnergyUpgrade.loadFromItem(item) != null;
-        int y = hasEnergyUpgrade ? 12 : 13;
-        int bgH = hasEnergyUpgrade ? 4 : 2;
+        int y = (Config.renderDurabilityBar ^ Config.renderChargeBar) || !hasEnergyUpgrade ? 13 : 12;
+        int bgH = (Config.renderDurabilityBar ^ Config.renderChargeBar) || !hasEnergyUpgrade ? 2 : 4;
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         RenderUtil.renderQuad2D(2, y, 0, 13, bgH, ColorUtil.getRGB(Color.black));
 
-        double maxDam = item.getMaxDamage();
-        double dispDamage = item.getItemDamageForDisplay();
-        y = hasEnergyUpgrade ? 14 : 13;
-        renderBar(y, maxDam, dispDamage, Color.green, Color.red);
+        double maxDam, dispDamage;
+        if (Config.renderDurabilityBar) {
+            maxDam = item.getMaxDamage();
+            dispDamage = item.getItemDamageForDisplay();
+            y = Config.renderChargeBar && hasEnergyUpgrade ? 14 : 13;
+            renderBar(y, maxDam, dispDamage, Color.green, Color.red);
+        }
 
-        if (hasEnergyUpgrade) {
+        if (Config.renderChargeBar && hasEnergyUpgrade) {
             IEnergyContainerItem armor = (IEnergyContainerItem) item.getItem();
             maxDam = armor.getMaxEnergyStored(item);
             dispDamage = armor.getEnergyStored(item);
-            y = 12;
+            y = Config.renderDurabilityBar ? 12 : 13;
             Color color = new Color(0x2D, 0xCE, 0xFA); // electric blue
             renderBar2(y, maxDam, maxDam - dispDamage, color, color);
         }

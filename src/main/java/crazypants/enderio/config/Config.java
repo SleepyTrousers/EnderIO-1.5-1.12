@@ -321,6 +321,8 @@ public final class Config {
     public static boolean addFuelTooltipsToAllFluidContainers = true;
     public static boolean addFurnaceFuelTootip = true;
     public static boolean addDurabilityTootip = true;
+    public static boolean renderDurabilityBar = true;
+    public static boolean renderChargeBar = true;
 
     public static int farmContinuousEnergyUseRF = 40;
     public static int farmActionEnergyUseRF = 500;
@@ -1916,6 +1918,16 @@ public final class Config {
                 "addFurnaceFuelTootip",
                 addFuelTooltipsToAllFluidContainers,
                 "If true, adds burn duration tooltips to furnace fuels").getBoolean(addFurnaceFuelTootip);
+        renderChargeBar = config.get(
+                sectionPersonal.name,
+                "renderChargeBar",
+                renderChargeBar,
+                "If true, render the bar when an item has RF").getBoolean(renderChargeBar);
+        renderDurabilityBar = config.get(
+                sectionPersonal.name,
+                "renderDurabilityBar",
+                renderDurabilityBar,
+                "If true, render the bar when an item is damaged").getBoolean(renderDurabilityBar);
 
         farmContinuousEnergyUseRF = config.get(
                 sectionFarm.name,

@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.power.PowerHandlerUtil;
 
 public class BlockItemCapBank extends ItemBlock implements IEnergyContainerItem {
@@ -42,7 +43,7 @@ public class BlockItemCapBank extends ItemBlock implements IEnergyContainerItem 
 
     @Override
     public boolean showDurabilityBar(ItemStack itemStack) {
-        return !CapBankType.getTypeFromMeta(itemStack.getItemDamage()).isCreative();
+        return Config.renderDurabilityBar && !CapBankType.getTypeFromMeta(itemStack.getItemDamage()).isCreative();
     }
 
     @Override
