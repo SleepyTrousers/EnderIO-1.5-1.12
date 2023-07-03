@@ -58,6 +58,7 @@ public class PacketModItemFilter extends AbstractConduitPacket<IItemConduit>
 
     @Override
     public IMessage onMessage(PacketModItemFilter message, MessageContext ctx) {
+        if (isInvalidPacketForGui(message, ctx)) return null;
         IItemConduit conduit = message.getTileCasted(ctx);
         if (conduit == null) {
             return null;

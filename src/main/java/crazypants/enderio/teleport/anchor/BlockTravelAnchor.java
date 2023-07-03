@@ -181,7 +181,7 @@ public class BlockTravelAnchor extends BlockEio
             if (ID == GuiHandler.GUI_ID_TRAVEL_ACCESSABLE) {
                 return new ContainerTravelAccessable(player.inventory, (ITravelAccessable) te, world);
             } else {
-                return new ContainerTravelAuth(player.inventory);
+                return new ContainerTravelAuth(player.inventory, te);
             }
         }
         return null;

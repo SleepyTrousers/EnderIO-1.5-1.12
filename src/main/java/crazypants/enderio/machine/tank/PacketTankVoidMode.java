@@ -6,6 +6,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.machine.tank.GuiTank.VoidMode;
+import crazypants.enderio.network.PacketUtil;
 import io.netty.buffer.ByteBuf;
 
 public class PacketTankVoidMode extends MessageTileEntity<TileTank>
@@ -35,9 +36,8 @@ public class PacketTankVoidMode extends MessageTileEntity<TileTank>
     @Override
     public IMessage onMessage(PacketTankVoidMode message, MessageContext ctx) {
         TileTank te = message.getTileEntity(ctx.getServerHandler().playerEntity.worldObj);
-        if (te != null) {
-            te.setVoidMode(message.mode);
-        }
+        if (PacketUtil.isInvalidPacketForGui(ctx, te, getClass())) return null;
+        te.setVoidMode(message.mode);
         return null;
     }
 }

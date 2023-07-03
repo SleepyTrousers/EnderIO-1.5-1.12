@@ -10,15 +10,14 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
-import com.enderio.core.common.ContainerEnder;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.machine.capbank.network.InventoryImpl;
+import crazypants.enderio.machine.gui.ContainerEnderTileEntity;
 import crazypants.util.BaublesUtil;
 import crazypants.util.ShadowInventory;
 
-public class ContainerCapBank extends ContainerEnder<TileCapBank> {
+public class ContainerCapBank extends ContainerEnderTileEntity<TileCapBank> {
 
     private InventoryImpl inv;
 

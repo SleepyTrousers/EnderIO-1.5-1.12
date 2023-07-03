@@ -3,7 +3,6 @@ package crazypants.enderio.machine.obelisk.xp;
 import java.util.Random;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -49,7 +48,7 @@ public class BlockExperienceObelisk extends BlockObeliskAbstract<TileExperienceO
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         TileEntity te = world.getTileEntity(x, y, z);
         if (te instanceof TileExperienceObelisk) {
-            return new ContainerNoInv((IInventory) te);
+            return new ContainerNoInv((TileExperienceObelisk) te);
         }
         return null;
     }

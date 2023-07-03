@@ -5,6 +5,7 @@ import java.awt.Color;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
@@ -24,7 +25,7 @@ public class GuiTravelAuth extends GuiContainerBaseEIO {
     private final EntityPlayer player;
 
     public GuiTravelAuth(EntityPlayer player, ITravelAccessable te, World world) {
-        super(new ContainerTravelAuth(player.inventory), "travelAuth");
+        super(new ContainerTravelAuth(player.inventory, (TileEntity) te), "travelAuth");
         this.ta = te;
         title = EnderIO.lang.localize("gui.travelAccessable.enterCode");
         this.player = player;

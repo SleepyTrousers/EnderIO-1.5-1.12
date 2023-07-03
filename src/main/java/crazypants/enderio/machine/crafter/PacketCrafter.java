@@ -8,6 +8,7 @@ import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import crazypants.enderio.network.PacketUtil;
 import io.netty.buffer.ByteBuf;
 
 public class PacketCrafter extends MessageTileEntity<TileCrafter> implements IMessageHandler<PacketCrafter, IMessage> {
@@ -46,9 +47,8 @@ public class PacketCrafter extends MessageTileEntity<TileCrafter> implements IMe
     @Override
     public IMessage onMessage(PacketCrafter msg, MessageContext ctx) {
         TileCrafter te = msg.getTileEntity(ctx.getServerHandler().playerEntity.worldObj);
-        if (te != null) {
-            msg.execute(te);
-        }
+        if (PacketUtil.isInvalidPacketForGui(ctx, te, getClass())) return null;
+        msg.execute(te);
         return null;
     }
 

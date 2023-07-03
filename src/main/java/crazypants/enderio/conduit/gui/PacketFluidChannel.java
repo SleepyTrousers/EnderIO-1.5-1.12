@@ -49,6 +49,7 @@ public class PacketFluidChannel extends AbstractConduitPacket<ILiquidConduit>
 
     @Override
     public IMessage onMessage(PacketFluidChannel message, MessageContext ctx) {
+        if (isInvalidPacketForGui(message, ctx)) return null;
         ILiquidConduit conduit = message.getTileCasted(ctx);
         if (!(conduit instanceof AbstractEnderLiquidConduit)) {
             return null;

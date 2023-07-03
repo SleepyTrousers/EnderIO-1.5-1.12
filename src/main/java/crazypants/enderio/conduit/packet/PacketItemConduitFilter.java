@@ -68,6 +68,7 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
 
     @Override
     public IMessage onMessage(PacketItemConduitFilter message, MessageContext ctx) {
+        if (isInvalidPacketForGui(message, ctx)) return null;
         IItemConduit conduit = message.getTileCasted(ctx);
         conduit.setSelfFeedEnabled(message.dir, message.loopMode);
         conduit.setRoundRobinEnabled(message.dir, message.roundRobin);

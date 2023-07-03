@@ -8,6 +8,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.api.teleport.ITravelAccessable;
+import crazypants.enderio.network.PacketUtil;
 import io.netty.buffer.ByteBuf;
 
 public class PacketLabel implements IMessage, IMessageHandler<PacketLabel, IMessage> {
@@ -55,6 +56,7 @@ public class PacketLabel implements IMessage, IMessageHandler<PacketLabel, IMess
     public IMessage onMessage(PacketLabel message, MessageContext ctx) {
         EntityPlayer player = ctx.getServerHandler().playerEntity;
         TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
+        if (PacketUtil.isInvalidPacketForGui(ctx, te, getClass())) return null;
         if (te instanceof ITravelAccessable) {
             ((ITravelAccessable) te).setLabel(message.label);
             player.worldObj.markBlockForUpdate(message.x, message.y, message.z);

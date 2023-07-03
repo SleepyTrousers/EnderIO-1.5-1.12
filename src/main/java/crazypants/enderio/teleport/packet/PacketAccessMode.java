@@ -7,6 +7,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.api.teleport.ITravelAccessable;
+import crazypants.enderio.network.PacketUtil;
 import crazypants.enderio.teleport.anchor.TileTravelAnchor;
 import io.netty.buffer.ByteBuf;
 
@@ -48,6 +49,7 @@ public class PacketAccessMode implements IMessage, IMessageHandler<PacketAccessM
     public IMessage onMessage(PacketAccessMode message, MessageContext ctx) {
         EntityPlayer player = ctx.getServerHandler().playerEntity;
         TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
+        if (PacketUtil.isInvalidPacketForGui(ctx, te, getClass())) return null;
         if (te instanceof ITravelAccessable) {
             ((ITravelAccessable) te).setAccessMode(message.mode);
             player.worldObj.markBlockForUpdate(message.x, message.y, message.z);

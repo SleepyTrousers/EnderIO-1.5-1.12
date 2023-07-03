@@ -7,6 +7,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.machine.RedstoneControlMode;
+import crazypants.enderio.network.PacketUtil;
 import io.netty.buffer.ByteBuf;
 
 public class PacketClientState implements IMessage, IMessageHandler<PacketClientState, IMessage> {
@@ -62,6 +63,7 @@ public class PacketClientState implements IMessage, IMessageHandler<PacketClient
     public IMessage onMessage(PacketClientState message, MessageContext ctx) {
         EntityPlayer player = ctx.getServerHandler().playerEntity;
         TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
+        if (PacketUtil.isInvalidPacketForGui(ctx, te, getClass())) return null;
         if (te instanceof TileCapacitorBank) {
             TileCapacitorBank cb = (TileCapacitorBank) te;
             cb.setInputControlMode(message.inputMode);

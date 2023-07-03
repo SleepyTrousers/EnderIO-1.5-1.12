@@ -5,6 +5,7 @@ import net.minecraft.tileentity.TileEntity;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import crazypants.enderio.network.PacketUtil;
 import io.netty.buffer.ByteBuf;
 
 public class PacketClientState implements IMessage, IMessageHandler<PacketClientState, IMessage> {
@@ -43,6 +44,7 @@ public class PacketClientState implements IMessage, IMessageHandler<PacketClient
 
     public IMessage onMessage(PacketClientState message, MessageContext ctx) {
         TileEntity te = ctx.getServerHandler().playerEntity.worldObj.getTileEntity(message.x, message.y, message.z);
+        if (PacketUtil.isInvalidPacketForGui(ctx, te, getClass())) return null;
         if (te instanceof TileAlloySmelter) {
             TileAlloySmelter me = (TileAlloySmelter) te;
             me.setMode(message.mode);

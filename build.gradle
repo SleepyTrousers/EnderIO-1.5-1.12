@@ -1,4 +1,4 @@
-//version: 1684218858
+//version: 1685785062
 /*
  DO NOT CHANGE THIS FILE!
  Also, you may replace this file at any time if there is an update available.
@@ -1276,12 +1276,14 @@ tasks.register('faq') {
     description = 'Prints frequently asked questions about building a project'
 
     doLast {
-        print("If your build fails to fetch dependencies, they might have been deleted and replaced by newer " +
-            "versions.\nCheck if the versions you try to fetch are still on the distributing sites.\n" +
-            "The links can be found in repositories.gradle and build.gradle:repositories, " +
-            "not build.gradle:buildscript.repositories - this one is for gradle plugin metadata.\n\n" +
+        print("If your build fails to fetch dependencies, run './gradlew updateDependencies'. " +
+            "Or you can manually check if the versions are still on the distributing sites - " +
+            "the links can be found in repositories.gradle and build.gradle:repositories, " +
+            "but not build.gradle:buildscript.repositories - those ones are for gradle plugin metadata.\n\n" +
             "If your build fails to recognize the syntax of new Java versions, enable Jabel in your " +
-            "gradle.properties. See how it's done in GTNH ExampleMod/gradle.properties.")
+            "gradle.properties. See how it's done in GTNH ExampleMod/gradle.properties. " +
+            "However, keep in mind that Jabel enables only syntax features, but not APIs that were introduced in " +
+            "Java 9 or later.")
     }
 }
 

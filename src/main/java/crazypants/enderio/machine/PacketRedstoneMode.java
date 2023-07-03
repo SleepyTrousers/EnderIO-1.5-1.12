@@ -6,6 +6,7 @@ import net.minecraft.tileentity.TileEntity;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import crazypants.enderio.network.PacketUtil;
 import io.netty.buffer.ByteBuf;
 
 public class PacketRedstoneMode implements IMessage, IMessageHandler<PacketRedstoneMode, IMessage> {
@@ -52,6 +53,7 @@ public class PacketRedstoneMode implements IMessage, IMessageHandler<PacketRedst
     public IMessage onMessage(PacketRedstoneMode message, MessageContext ctx) {
         EntityPlayer player = ctx.getServerHandler().playerEntity;
         TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
+        if (PacketUtil.isInvalidPacketForGui(ctx, te, getClass())) return null;
         if (te instanceof IRedstoneModeControlable) {
             IRedstoneModeControlable me = (IRedstoneModeControlable) te;
             me.setRedstoneControlMode(message.mode);

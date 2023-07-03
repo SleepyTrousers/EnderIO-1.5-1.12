@@ -8,6 +8,7 @@ import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import crazypants.enderio.network.PacketUtil;
 import io.netty.buffer.ByteBuf;
 
 public class PacketVaccumChest extends MessageTileEntity<TileVacuumChest>
@@ -77,21 +78,20 @@ public class PacketVaccumChest extends MessageTileEntity<TileVacuumChest>
     @Override
     public IMessage onMessage(PacketVaccumChest msg, MessageContext ctx) {
         TileVacuumChest te = msg.getTileEntity(ctx.getServerHandler().playerEntity.worldObj);
-        if (te != null) {
-            switch (msg.cmd) {
-                case CMD_SET_RANGE:
-                    te.setRange(msg.value);
-                    break;
-                case CMD_SET_SLOT:
-                    te.setItemFilterSlot(msg.value, msg.stack);
-                    break;
-                case CMD_SET_BLACKLIST:
-                    te.setFilterBlacklist(msg.value != 0);
-                    break;
-                case CMD_SET_MATCHMETA:
-                    te.setFilterMatchMeta(msg.value != 0);
-                    break;
-            }
+        if (PacketUtil.isInvalidPacketForGui(ctx, te, getClass())) return null;
+        switch (msg.cmd) {
+            case CMD_SET_RANGE:
+                te.setRange(msg.value);
+                break;
+            case CMD_SET_SLOT:
+                te.setItemFilterSlot(msg.value, msg.stack);
+                break;
+            case CMD_SET_BLACKLIST:
+                te.setFilterBlacklist(msg.value != 0);
+                break;
+            case CMD_SET_MATCHMETA:
+                te.setFilterMatchMeta(msg.value != 0);
+                break;
         }
         return null;
     }

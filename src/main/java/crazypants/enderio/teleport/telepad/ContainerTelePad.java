@@ -4,13 +4,19 @@ import java.awt.Point;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.tileentity.TileEntity;
 
 import com.enderio.core.common.ContainerEnder;
 
-public class ContainerTelePad extends ContainerEnder<IInventory> {
+import crazypants.enderio.machine.gui.IContainerWithTileEntity;
 
-    public ContainerTelePad(InventoryPlayer playerInv) {
+public class ContainerTelePad extends ContainerEnder<IInventory> implements IContainerWithTileEntity {
+
+    private final TileTelePad te;
+
+    public ContainerTelePad(InventoryPlayer playerInv, TileTelePad te) {
         super(playerInv, playerInv);
+        this.te = te;
     }
 
     @Override
@@ -18,5 +24,10 @@ public class ContainerTelePad extends ContainerEnder<IInventory> {
         Point p = super.getPlayerInventoryOffset();
         p.translate(0, 34);
         return p;
+    }
+
+    @Override
+    public TileEntity getTileEntity() {
+        return te;
     }
 }

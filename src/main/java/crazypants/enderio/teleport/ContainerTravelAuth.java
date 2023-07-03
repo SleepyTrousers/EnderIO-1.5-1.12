@@ -6,14 +6,16 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.ContainerEnder;
 import com.enderio.core.common.util.ArrayInventory;
 
+import crazypants.enderio.machine.gui.IContainerWithTileEntity;
 import crazypants.enderio.teleport.ContainerTravelAuth.AuthInventory;
 
-public class ContainerTravelAuth extends ContainerEnder<AuthInventory> {
+public class ContainerTravelAuth extends ContainerEnder<AuthInventory> implements IContainerWithTileEntity {
 
     static class AuthInventory extends ArrayInventory {
 
@@ -87,10 +89,12 @@ public class ContainerTravelAuth extends ContainerEnder<AuthInventory> {
         }
     }
 
+    private final TileEntity te;
     boolean dirty = false;
 
-    public ContainerTravelAuth(InventoryPlayer playerInv) {
+    public ContainerTravelAuth(InventoryPlayer playerInv, TileEntity te) {
         super(playerInv, new AuthInventory(new ItemStack[5]));
+        this.te = te;
         getInv().setContainer(this);
     }
 
@@ -116,6 +120,11 @@ public class ContainerTravelAuth extends ContainerEnder<AuthInventory> {
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
         return null;
+    }
+
+    @Override
+    public TileEntity getTileEntity() {
+        return te;
     }
 
     private static class AuthGhostSlot extends GhostSlot {

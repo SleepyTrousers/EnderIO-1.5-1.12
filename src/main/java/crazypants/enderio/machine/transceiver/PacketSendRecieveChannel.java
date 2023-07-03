@@ -9,6 +9,7 @@ import com.enderio.core.common.network.NetworkUtil;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import crazypants.enderio.network.PacketUtil;
 import io.netty.buffer.ByteBuf;
 
 public class PacketSendRecieveChannel extends MessageTileEntity<TileTransceiver>
@@ -50,10 +51,11 @@ public class PacketSendRecieveChannel extends MessageTileEntity<TileTransceiver>
     public IMessage onMessage(PacketSendRecieveChannel message, MessageContext ctx) {
         EntityPlayer player = ctx.getServerHandler().playerEntity;
         TileTransceiver tile = message.getTileEntity(player.worldObj);
+        if (PacketUtil.isInvalidPacketForGui(ctx, tile, getClass())) return null;
         Channel channel = message.channel;
         boolean isSend = message.isSend;
         boolean isAdd = message.isAdd;
-        if (tile != null && channel != null) {
+        if (channel != null) {
             if (isSend) {
                 if (isAdd) {
                     tile.addSendChanel(channel);

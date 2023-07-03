@@ -39,6 +39,7 @@ public class PacketRoundRobinMode extends AbstractConduitPacket<ILiquidConduit>
 
     @Override
     public IMessage onMessage(PacketRoundRobinMode message, MessageContext ctx) {
+        if (isInvalidPacketForGui(message, ctx)) return null;
         final ILiquidConduit conduit = message.getTileCasted(ctx);
         if (conduit instanceof AbstractEnderLiquidConduit) {
             ((AbstractEnderLiquidConduit) conduit).setRoundRobin(message.dir, message.roundRobin);

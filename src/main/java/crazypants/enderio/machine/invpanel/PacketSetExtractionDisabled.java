@@ -8,6 +8,7 @@ import com.enderio.core.common.network.MessageTileEntity;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import crazypants.enderio.network.PacketUtil;
 import io.netty.buffer.ByteBuf;
 
 public class PacketSetExtractionDisabled extends MessageTileEntity<TileInventoryPanel>
@@ -38,6 +39,7 @@ public class PacketSetExtractionDisabled extends MessageTileEntity<TileInventory
     public IMessage onMessage(PacketSetExtractionDisabled message, MessageContext ctx) {
         EntityPlayerMP player = ctx.getServerHandler().playerEntity;
         TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
+        if (PacketUtil.isInvalidPacketForGui(ctx, te, getClass())) return null;
         if (te instanceof TileInventoryPanel) {
             TileInventoryPanel teInvPanel = (TileInventoryPanel) te;
             teInvPanel.setExtractionDisabled(message.extractionDisabled);

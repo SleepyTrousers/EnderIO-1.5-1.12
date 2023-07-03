@@ -15,10 +15,11 @@ import com.enderio.core.common.ContainerEnder;
 import com.enderio.core.common.TileEntityEnder;
 
 import crazypants.enderio.api.teleport.ITravelAccessable;
+import crazypants.enderio.machine.gui.IContainerWithTileEntity;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.packet.PacketPassword;
 
-public class ContainerTravelAccessable extends ContainerEnder<IInventory> {
+public class ContainerTravelAccessable extends ContainerEnder<IInventory> implements IContainerWithTileEntity {
 
     ITravelAccessable ta;
     TileEntity te;
@@ -96,5 +97,10 @@ public class ContainerTravelAccessable extends ContainerEnder<IInventory> {
                 }
             }
         }
+    }
+
+    @Override
+    public TileEntity getTileEntity() {
+        return te;
     }
 }

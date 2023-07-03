@@ -7,6 +7,7 @@ import com.enderio.core.common.network.MessageTileEntity;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import crazypants.enderio.network.PacketUtil;
 import io.netty.buffer.ByteBuf;
 
 public class PacketDumpTank extends MessageTileEntity<TileVat> implements IMessageHandler<PacketDumpTank, IMessage> {
@@ -47,9 +48,8 @@ public class PacketDumpTank extends MessageTileEntity<TileVat> implements IMessa
     @Override
     public IMessage onMessage(PacketDumpTank message, MessageContext ctx) {
         TileVat te = message.getTileEntity(ctx.getServerHandler().playerEntity.worldObj);
-        if (te != null) {
-            message.getTank(te).setFluid(null);
-        }
+        if (PacketUtil.isInvalidPacketForGui(ctx, te, getClass())) return null;
+        message.getTank(te).setFluid(null);
         return null;
     }
 }

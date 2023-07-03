@@ -5,6 +5,7 @@ import com.enderio.core.common.network.MessageTileEntity;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import crazypants.enderio.network.PacketUtil;
 import io.netty.buffer.ByteBuf;
 
 public class PacketFarmLockedSlot extends MessageTileEntity<TileFarmStation>
@@ -34,9 +35,8 @@ public class PacketFarmLockedSlot extends MessageTileEntity<TileFarmStation>
     @Override
     public IMessage onMessage(PacketFarmLockedSlot message, MessageContext ctx) {
         TileFarmStation te = message.getTileEntity(message.getWorld(ctx));
-        if (te != null) {
-            te.toggleLockedState(message.buttonID);
-        }
+        if (PacketUtil.isInvalidPacketForGui(ctx, te, getClass())) return null;
+        te.toggleLockedState(message.buttonID);
         return null;
     }
 }

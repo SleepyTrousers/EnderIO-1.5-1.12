@@ -6,6 +6,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.network.PacketUtil;
 
 public class PacketActivateWeather extends MessageTileEntity<TileWeatherObelisk>
         implements IMessageHandler<PacketActivateWeather, IMessage> {
@@ -22,6 +23,7 @@ public class PacketActivateWeather extends MessageTileEntity<TileWeatherObelisk>
                 .getTileEntity(ctx.side.isServer() ? message.getWorld(ctx) : EnderIO.proxy.getClientWorld());
         if (te != null) {
             if (ctx.side.isServer()) {
+                if (PacketUtil.isInvalidPacketForGui(ctx, te, getClass())) return null;
                 te.startTask();
             } else {
                 te.stopTask();

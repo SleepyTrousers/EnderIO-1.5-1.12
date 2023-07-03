@@ -2,19 +2,25 @@ package crazypants.enderio.machine;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
+import net.minecraft.tileentity.TileEntity;
 
-public class ContainerNoInv extends Container {
+import crazypants.enderio.machine.gui.IContainerWithTileEntity;
 
-    private IInventory inv;
+public class ContainerNoInv extends Container implements IContainerWithTileEntity {
 
-    public ContainerNoInv(IInventory inv) {
-        super();
-        this.inv = inv;
+    private final AbstractMachineEntity tile;
+
+    public ContainerNoInv(AbstractMachineEntity tile) {
+        this.tile = tile;
     }
 
     @Override
     public boolean canInteractWith(EntityPlayer player) {
-        return inv.isUseableByPlayer(player);
+        return tile.isUseableByPlayer(player);
+    }
+
+    @Override
+    public TileEntity getTileEntity() {
+        return tile;
     }
 }

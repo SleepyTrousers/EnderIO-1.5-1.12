@@ -10,6 +10,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.api.teleport.ITravelAccessable;
+import crazypants.enderio.network.PacketUtil;
 import io.netty.buffer.ByteBuf;
 
 public class PacketPassword extends MessageTileEntity<TileEntityEnder> {
@@ -61,6 +62,7 @@ public class PacketPassword extends MessageTileEntity<TileEntityEnder> {
         @Override
         public IMessage onMessage(PacketPassword msg, MessageContext ctx) {
             TileEntityEnder te = msg.getTileEntity(ctx.getServerHandler().playerEntity.worldObj);
+            if (PacketUtil.isInvalidPacketForGui(ctx, te, getClass())) return null;
             if (te instanceof ITravelAccessable) {
                 if (((ITravelAccessable) te).canUiBeAccessed(ctx.getServerHandler().playerEntity)) {
                     if (msg.stack != null) {

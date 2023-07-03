@@ -10,6 +10,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.conduit.item.filter.ItemFilter;
+import crazypants.enderio.network.PacketUtil;
 import io.netty.buffer.ByteBuf;
 
 public class PacketItemFilter extends MessageTileEntity<TileTransceiver>
@@ -52,9 +53,10 @@ public class PacketItemFilter extends MessageTileEntity<TileTransceiver>
     public IMessage onMessage(PacketItemFilter message, MessageContext ctx) {
         EntityPlayer player = ctx.getServerHandler().playerEntity;
         TileTransceiver tile = message.getTileEntity(player.worldObj);
+        if (PacketUtil.isInvalidPacketForGui(ctx, tile, getClass())) return null;
         boolean isSend = message.isSend;
         ItemFilter filter = message.filter;
-        if (tile != null && filter != null) {
+        if (filter != null) {
             if (isSend) {
                 tile.setSendItemFilter(filter);
             } else {

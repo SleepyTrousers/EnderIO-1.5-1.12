@@ -38,6 +38,7 @@ public class PacketRedstoneConduitOutputStrength extends AbstractConduitPacket<I
 
     @Override
     public IMessage onMessage(PacketRedstoneConduitOutputStrength message, MessageContext ctx) {
+        if (isInvalidPacketForGui(message, ctx)) return null;
         IInsulatedRedstoneConduit tile = message.getTileCasted(ctx);
         if (tile != null) {
             tile.setOutputStrength(message.dir, message.isStrong);

@@ -10,6 +10,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -24,12 +25,14 @@ import crazypants.enderio.conduit.gui.item.InventoryUpgrades;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.SpeedUpgrade;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
+import crazypants.enderio.machine.gui.IContainerWithTileEntity;
 import crazypants.enderio.network.PacketHandler;
 
-public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrades> {
+public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrades> implements IContainerWithTileEntity {
 
     private final IItemConduit itemConduit;
     private final ForgeDirection direction;
+    private final TileEntity te;
 
     private int speedUpgradeSlotLimit = 15;
 
@@ -52,6 +55,7 @@ public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrade
         super(playerInv, new InventoryUpgrades(bundle.getConduit(IItemConduit.class), dir));
         this.direction = dir;
         this.itemConduit = bundle.getConduit(IItemConduit.class);
+        this.te = (TileEntity) bundle;
         slotLocations.addAll(playerSlotLocations.values());
 
         int x;
@@ -278,6 +282,11 @@ public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrade
         }
 
         return copystack;
+    }
+
+    @Override
+    public TileEntity getTileEntity() {
+        return te;
     }
 
     private class FilterSlot extends Slot {

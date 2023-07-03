@@ -58,6 +58,7 @@ public class PacketExistingItemFilterSnapshot extends AbstractConduitPacket<IIte
 
     @Override
     public PacketExistingItemFilterSnapshot onMessage(PacketExistingItemFilterSnapshot message, MessageContext ctx) {
+        if (isInvalidPacketForGui(message, ctx)) return null;
         IItemConduit conduit = message.getTileCasted(ctx);
         if (conduit == null) {
             return null;

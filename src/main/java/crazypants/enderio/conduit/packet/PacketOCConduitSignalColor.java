@@ -40,6 +40,7 @@ public class PacketOCConduitSignalColor extends AbstractConduitPacket<IOCConduit
 
     @Override
     public IMessage onMessage(PacketOCConduitSignalColor message, MessageContext ctx) {
+        if (isInvalidPacketForGui(message, ctx)) return null;
         message.getTileCasted(ctx).setSignalColor(message.dir, message.col);
         message.getWorld(ctx).markBlockForUpdate(message.x, message.y, message.z);
         return null;

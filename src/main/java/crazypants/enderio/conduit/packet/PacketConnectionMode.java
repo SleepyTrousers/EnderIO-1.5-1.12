@@ -40,6 +40,7 @@ public class PacketConnectionMode extends AbstractConduitPacket<IConduit>
 
     @Override
     public IMessage onMessage(PacketConnectionMode message, MessageContext ctx) {
+        if (isInvalidPacketForGui(message, ctx)) return null;
         IConduit conduit = message.getTileCasted(ctx);
         if (conduit == null) {
             return null;

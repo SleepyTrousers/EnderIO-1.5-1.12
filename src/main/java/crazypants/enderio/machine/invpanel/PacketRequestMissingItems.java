@@ -18,6 +18,7 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
 import crazypants.enderio.machine.invpanel.server.ItemEntry;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.network.PacketUtil;
 import io.netty.buffer.ByteBuf;
 
 public class PacketRequestMissingItems extends MessageTileEntity<TileInventoryPanel>
@@ -62,6 +63,7 @@ public class PacketRequestMissingItems extends MessageTileEntity<TileInventoryPa
     public IMessage onMessage(PacketRequestMissingItems message, MessageContext ctx) {
         EntityPlayerMP player = ctx.getServerHandler().playerEntity;
         TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
+        if (PacketUtil.isInvalidPacketForGui(ctx, te, getClass())) return null;
         if (te instanceof TileInventoryPanel) {
             TileInventoryPanel teInvPanel = (TileInventoryPanel) te;
             InventoryDatabaseServer db = teInvPanel.getDatabaseServer();

@@ -11,9 +11,10 @@ import net.minecraft.item.ItemStack;
 
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
-import com.enderio.core.common.ContainerEnder;
 
-public class ContainerEnchanter extends ContainerEnder<TileEnchanter> {
+import crazypants.enderio.machine.gui.ContainerEnderTileEntity;
+
+public class ContainerEnchanter extends ContainerEnderTileEntity<TileEnchanter> {
 
     public ContainerEnchanter(EntityPlayer player, InventoryPlayer playerInv, TileEnchanter te) {
         super(playerInv, te);

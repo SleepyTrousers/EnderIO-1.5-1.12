@@ -167,11 +167,11 @@ public class BlockTelePad extends BlockTravelAnchor {
         if (te instanceof TileTelePad) {
             switch (ID) {
                 case GuiHandler.GUI_ID_TELEPAD:
-                    return new ContainerTelePad(player.inventory);
+                    return new ContainerTelePad(player.inventory, (TileTelePad) te);
                 case GuiHandler.GUI_ID_TELEPAD_TRAVEL:
                     return new ContainerTravelAccessable(player.inventory, (TileTelePad) te, world);
                 default:
-                    return new ContainerTravelAuth(player.inventory);
+                    return new ContainerTravelAuth(player.inventory, te);
             }
         }
         return null;

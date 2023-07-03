@@ -10,11 +10,11 @@ import net.minecraft.item.ItemStack;
 
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
-import com.enderio.core.common.ContainerEnder;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.machine.gui.ContainerEnderTileEntity;
 
-public class ContainerVacuumChest extends ContainerEnder<TileVacuumChest> {
+public class ContainerVacuumChest extends ContainerEnderTileEntity<TileVacuumChest> {
 
     private Slot filterSlot;
     private Runnable filterChangedCB;

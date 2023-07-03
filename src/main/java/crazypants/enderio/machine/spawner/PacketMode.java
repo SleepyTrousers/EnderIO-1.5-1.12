@@ -5,6 +5,7 @@ import net.minecraft.tileentity.TileEntity;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import crazypants.enderio.network.PacketUtil;
 import io.netty.buffer.ByteBuf;
 
 public class PacketMode implements IMessage, IMessageHandler<PacketMode, IMessage> {
@@ -43,6 +44,7 @@ public class PacketMode implements IMessage, IMessageHandler<PacketMode, IMessag
     @Override
     public IMessage onMessage(PacketMode message, MessageContext ctx) {
         TileEntity te = ctx.getServerHandler().playerEntity.worldObj.getTileEntity(message.x, message.y, message.z);
+        if (PacketUtil.isInvalidPacketForGui(ctx, te, getClass())) return null;
         if (te instanceof TilePoweredSpawner) {
             TilePoweredSpawner me = (TilePoweredSpawner) te;
             me.setSpawnMode(message.isSpawnMode);
