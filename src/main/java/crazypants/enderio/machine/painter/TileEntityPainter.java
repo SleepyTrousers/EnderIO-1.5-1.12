@@ -96,9 +96,10 @@ public class TileEntityPainter extends AbstractPoweredTaskEntity implements ISid
             // next result is a different item type
             return 0;
         } else if (result.hasTagCompound() && inventory[2].hasTagCompound()) {
-            int cookedId = result.getTagCompound().getInteger(BlockPainter.KEY_SOURCE_BLOCK_ID);
-            int invId = inventory[2].getTagCompound().getInteger(BlockPainter.KEY_SOURCE_BLOCK_ID);
-            if (cookedId != invId) {
+            if (inventory[2].getTagCompound().hasKey("Items")) return 0; // presence of internal items
+            String cookedId = result.getTagCompound().getString(BlockPainter.KEY_SOURCE_BLOCK_ID);
+            String invId = inventory[2].getTagCompound().getString(BlockPainter.KEY_SOURCE_BLOCK_ID);
+            if (!cookedId.equals(invId)) {
                 // next result has a different source item than the current one
                 return 0;
             }
