@@ -396,7 +396,7 @@ public class ItemDarkSteelSword extends ItemSword
 
     @Override
     public int canExtractInternal(ItemStack equipped, int power) {
-        return extractEnergy(equipped, power, true);
+        return Math.min(getEnergyStored(equipped), power);
     }
 
     private boolean isTravelUpgradeActive(EntityPlayer ep, ItemStack equipped) {
