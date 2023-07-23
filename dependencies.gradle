@@ -1,26 +1,26 @@
 // Add your dependencies here
 
 dependencies {
-    api('com.github.GTNewHorizons:EnderCore:0.2.14:dev')
-    implementation('com.github.GTNewHorizons:ForestryMC:4.6.7:dev')
-    implementation('com.github.GTNewHorizons:NotEnoughItems:2.3.53-GTNH:dev')
+    api('com.github.GTNewHorizons:EnderCore:0.2.16:dev')
+    implementation('com.github.GTNewHorizons:ForestryMC:4.6.13:dev')
+    implementation('com.github.GTNewHorizons:NotEnoughItems:2.3.76-GTNH:dev')
     implementation("com.github.GTNewHorizons:GTNHLib:0.0.13:dev")
-    api('com.github.GTNewHorizons:BuildCraft:7.1.33:dev')
+    api('com.github.GTNewHorizons:BuildCraft:7.1.36:dev')
     api('curse.maven:cofh-lib-220333:2388748') // https://www.curseforge.com/minecraft/mc-mods/cofh-lib/files/2388748
     shadowImplementation('cglib:cglib-nodep:3.3.0')
 
     compileOnly('com.github.GTNewHorizons:waila:1.6.0:api') {transitive = false}
-    compileOnly('com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-215-GTNH:api') {transitive = false}
+    compileOnly('com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-240-GTNH:api') {transitive = false}
     compileOnly('com.github.GTNewHorizons:Baubles:1.0.1.16:dev') {transitive = false}
-    compileOnly('com.github.GTNewHorizons:GT5-Unofficial:5.09.43.46:dev') {transitive = false}
-    compileOnly('com.github.GTNewHorizons:Railcraft:9.14.1:api') {transitive = false}
-    compileOnly('com.github.GTNewHorizons:StorageDrawers:1.2.0-GTNH:api') {transitive = false}
-    implementation('com.github.GTNewHorizons:Chisel:2.11.0-GTNH:dev') {transitive = false}
-    compileOnly('com.github.GTNewHorizons:OpenComputers:1.9.5-GTNH:api') {transitive = false}
+    compileOnly('com.github.GTNewHorizons:GT5-Unofficial:5.09.43.140:dev') {transitive = false}
+    compileOnly('com.github.GTNewHorizons:Railcraft:9.14.6:api') {transitive = false}
+    compileOnly('com.github.GTNewHorizons:StorageDrawers:1.12.0-GTNH:api') {transitive = false}
+    implementation('com.github.GTNewHorizons:Chisel:2.11.3-GTNH:dev') {transitive = false}
+    compileOnly('com.github.GTNewHorizons:OpenComputers:1.9.12-GTNH:api') {transitive = false}
     compileOnly('curse.maven:minefactory-reloaded-66672:2366150') // https://www.curseforge.com/minecraft/mc-mods/minefactory-reloaded/files/2366150
     compileOnly('thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev')
     compileOnly('curse.maven:ee3-65509:2305023') // https://www.curseforge.com/minecraft/mc-mods/ee3/files/2305023
-    compileOnly(deobf('https://media.forgecdn.net/files/2269/339/ComputerCraft1.75.jar')) // https://www.curseforge.com/minecraft/mc-mods/computercraft/files/2269339
-    compileOnly(deobf('https://media.forgecdn.net/files/2426/270/Mekanism-1.7.10-9.1.0.281.jar')) // https://aidancbrady.com/mekanism/download/
-    compileOnly(deobf('https://immibis.com/mcmoddl/files/immibis-microblocks-59.1.2.jar'))
+    compileOnly(rfg.deobf('curse.maven:computercraft-67504:2269339')) // https://www.curseforge.com/minecraft/mc-mods/computercraft/files/2269339
+    compileOnly(rfg.deobf('curse.maven:mekanism-268560:2475797')) // https://www.curseforge.com/minecraft/mc-mods/mekanism/files/2475797
+    compileOnly(rfg.deobf('maven.modrinth:immibis-microblocks:59.1.2')) // https://modrinth.com/mod/immibis-microblocks/version/59.1.2
 }
