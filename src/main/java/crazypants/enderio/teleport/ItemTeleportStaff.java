@@ -85,6 +85,11 @@ public class ItemTeleportStaff extends ItemTravelStaff {
     }
 
     @Override
+    public int canExtractInternal(ItemStack equipped, int power) {
+        return power;
+    }
+
+    @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List par3List) {
         ItemStack is = new ItemStack(this);

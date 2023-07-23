@@ -111,6 +111,47 @@ public class TravelController {
         }
     }
 
+    public boolean validatePacketTravelEvent(EntityPlayerMP toTp, int x, int y, int z, int powerUse,
+            boolean conserveMotion, TravelSource source) {
+        BlockCoord target = new BlockCoord(x, y, z);
+        double dist = getDistanceSquared(toTp, target);
+        // allow 15% overshoot to account for rounding
+        if (dist * 100 > source.getMaxDistanceTravelledSq() * 115) return false;
+        if (powerUse < getRequiredPower(toTp, source, target)) return false;
+        ItemStack equippedItem = toTp.getCurrentEquippedItem();
+        switch (source) {
+            case TELEPAD:
+                // this source is invalid for this type of packet
+                return false;
+            case BLOCK:
+                // this source is only triggered when player is on any active travel anchor
+                BlockCoord on = getActiveTravelBlock(toTp);
+                if (on == null) return false;
+                // target must be a valid selectedCoord
+                // selectedCoord can either be a block right above/below when the player is on anchor...
+                if (on.x == x && on.z == z) return true;
+                // or another anchor
+                TileEntity maybeAnchor = target.getTileEntity(toTp.worldObj);
+                if (!(maybeAnchor instanceof ITravelAccessable)) return false;
+                ITravelAccessable anchor = (ITravelAccessable) maybeAnchor;
+                return anchor.canBlockBeAccessed(toTp) || !isValidTarget(toTp, target, TravelSource.BLOCK);
+            case STAFF:
+            case STAFF_BLINK:
+                if (equippedItem == null || !(equippedItem.getItem() instanceof IItemOfTravel)) return false;
+                if (!((IItemOfTravel) equippedItem.getItem()).isActive(toTp, equippedItem)) return false;
+                int energy = ((IItemOfTravel) equippedItem.getItem()).canExtractInternal(equippedItem, powerUse);
+                return energy == -1 || energy == powerUse;
+            case TELEPORT_STAFF_BLINK:
+            case TELEPORT_STAFF:
+                // tp staff is creative version of traveling staff
+                // no energy check or anything else needed
+                // but the player must actually be equipped with one of these
+                return equippedItem != null && equippedItem.getItem() instanceof ItemTeleportStaff;
+            default:
+                throw new AssertionError("unidentified travel source");
+        }
+    }
+
     public void addBlockToBlinkBlackList(String blockName) {
         blackList.add(new UniqueIdentifier(blockName));
     }
@@ -733,33 +774,39 @@ public class TravelController {
                 && y <= 255; i++, y += direction) {
 
             // Circumvents the raytracing used to find candidates on the y axis
-            TileEntity selectedBlock = world.getTileEntity(currentBlock.x, y, currentBlock.z);
-
-            if (selectedBlock instanceof ITravelAccessable) {
-                ITravelAccessable travelBlock = (ITravelAccessable) selectedBlock;
-                BlockCoord targetBlock = new BlockCoord(currentBlock.x, y, currentBlock.z);
-
-                if (Config.travelAnchorSkipWarning) {
-                    if (travelBlock.getRequiresPassword(player)) {
-                        showMessage(player, new ChatComponentTranslation("enderio.gui.travelAccessable.skipLocked"));
-                    }
-
-                    if (travelBlock.getAccessMode() == ITravelAccessable.AccessMode.PRIVATE
-                            && !travelBlock.canUiBeAccessed(player)) {
-                        showMessage(player, new ChatComponentTranslation("enderio.gui.travelAccessable.skipPrivate"));
-                    }
-                    if (!isValidTarget(player, targetBlock, TravelSource.BLOCK)) {
-                        showMessage(
-                                player,
-                                new ChatComponentTranslation("enderio.gui.travelAccessable.skipObstructed"));
-                    }
-                }
-                if (travelBlock.canBlockBeAccessed(player) && isValidTarget(player, targetBlock, TravelSource.BLOCK)) {
-                    selectedCoord = targetBlock;
-                    return;
-                }
+            BlockCoord targetBlock = getValidVerticalTarget(player, currentBlock, world, y);
+            if (targetBlock != null) {
+                selectedCoord = targetBlock;
+                return;
             }
         }
+    }
+
+    private BlockCoord getValidVerticalTarget(EntityPlayer player, BlockCoord currentBlock, World world, int y) {
+        TileEntity selectedBlock = world.getTileEntity(currentBlock.x, y, currentBlock.z);
+
+        if (selectedBlock instanceof ITravelAccessable) {
+            ITravelAccessable travelBlock = (ITravelAccessable) selectedBlock;
+            BlockCoord targetBlock = new BlockCoord(currentBlock.x, y, currentBlock.z);
+
+            if (Config.travelAnchorSkipWarning) {
+                if (travelBlock.getRequiresPassword(player)) {
+                    showMessage(player, new ChatComponentTranslation("enderio.gui.travelAccessable.skipLocked"));
+                }
+
+                if (travelBlock.getAccessMode() == ITravelAccessable.AccessMode.PRIVATE
+                        && !travelBlock.canUiBeAccessed(player)) {
+                    showMessage(player, new ChatComponentTranslation("enderio.gui.travelAccessable.skipPrivate"));
+                }
+                if (!isValidTarget(player, targetBlock, TravelSource.BLOCK)) {
+                    showMessage(player, new ChatComponentTranslation("enderio.gui.travelAccessable.skipObstructed"));
+                }
+            }
+            if (travelBlock.canBlockBeAccessed(player) && isValidTarget(player, targetBlock, TravelSource.BLOCK)) {
+                return targetBlock;
+            }
+        }
+        return null;
     }
 
     @SideOnly(Side.CLIENT)
@@ -923,19 +970,16 @@ public class TravelController {
         return true;
     }
 
-    @SideOnly(Side.CLIENT)
     private BlockCoord getActiveTravelBlock(EntityPlayer player) {
-        World world = Minecraft.getMinecraft().theWorld;
-        if (world != null && player != null) {
-            int x = MathHelper.floor_double(player.posX);
-            int y = MathHelper.floor_double(player.boundingBox.minY) - 1;
-            int z = MathHelper.floor_double(player.posZ);
-            TileEntity tileEntity = world.getTileEntity(x, y, z);
-            if (tileEntity instanceof ITravelAccessable) {
-                if (((ITravelAccessable) tileEntity).isTravelSource()) {
-                    return new BlockCoord(x, y, z);
-                }
-            }
+        if (player == null) return null;
+        World world = player.worldObj;
+        if (world == null) return null;
+        int x = MathHelper.floor_double(player.posX);
+        int y = MathHelper.floor_double(player.boundingBox.minY) - 1;
+        int z = MathHelper.floor_double(player.posZ);
+        TileEntity tileEntity = world.getTileEntity(x, y, z);
+        if (tileEntity instanceof ITravelAccessable && ((ITravelAccessable) tileEntity).isTravelSource()) {
+            return new BlockCoord(x, y, z);
         }
         return null;
     }

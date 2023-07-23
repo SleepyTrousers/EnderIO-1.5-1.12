@@ -563,6 +563,8 @@ public final class Config {
     public static float inventoryPanelExtractCostPerItem = 12.0f;
     public static float inventoryPanelExtractCostPerOperation = 32.0f;
 
+    public static boolean strictTPItemChecking = true;
+
     public static void load(FMLPreInitializationEvent event) {
         PacketHandler.INSTANCE
                 .registerMessage(PacketConfigSync.class, PacketConfigSync.class, PacketHandler.nextID(), Side.CLIENT);
@@ -2884,6 +2886,12 @@ public final class Config {
                 0.0f,
                 10000.0f,
                 "Internal power used per extract operation (independent of stack size)");
+        strictTPItemChecking = config.get(
+                sectionMisc.name,
+                "strictTPItemChecking",
+                strictTPItemChecking,
+                "If true, turn on strict checking of item energy checking. This might cause traveling tools from third party mods to fire fake security warnings on server side and not function correctly.")
+                .getBoolean(strictTPItemChecking);
     }
 
     public static void checkYetaAccess() {

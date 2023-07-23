@@ -132,6 +132,11 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IItemOfTrave
         setEnergy(item, res);
     }
 
+    @Override
+    public int canExtractInternal(ItemStack equipped, int power) {
+        return Math.min(getEnergyStored(equipped), power);
+    }
+
     void setEnergy(ItemStack container, int energy) {
         if (container.stackTagCompound == null) {
             container.stackTagCompound = new NBTTagCompound();

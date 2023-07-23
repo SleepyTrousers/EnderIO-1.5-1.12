@@ -331,6 +331,11 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe
         extractEnergy(equipped, power, false);
     }
 
+    @Override
+    public int canExtractInternal(ItemStack equipped, int power) {
+        return extractEnergy(equipped, power, true);
+    }
+
     private boolean isTravelUpgradeActive(EntityPlayer ep, ItemStack equipped) {
         return isEquipped(ep) && ep.isSneaking() && TravelUpgrade.loadFromItem(equipped) != null;
     }
