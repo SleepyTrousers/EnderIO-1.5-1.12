@@ -4,7 +4,7 @@ dependencies {
 	deobfCompile "mezz.jei:jei_${minecraft_version}:${jei_version}"
 	deobfCompile "net.sengir.forestry:forestry_${minecraft_version}:${forestry_version}:api"
 	deobfCompile "team.chisel.ctm:CTM:${ctm_version}:api"
-	deobfCompile("cofh:CoFHCore:${cofhcore_version}:universal") {
+	deobfCompile("cofh:CoFHCoreBackup:${cofhcore_version}:universal") {
 		transitive = false // We don't need RF nor JEI, thank you very much
 	}
 	
